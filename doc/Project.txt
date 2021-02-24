@@ -1,0 +1,469 @@
+================================================================================
+--------------------------------------------------------------------------------
+# Capitaine Vaudou MapTool Framework : Project
+--------------------------------------------------------------------------------
+================================================================================
+
+	By Kleey and Zedafty, Testing by Jambon (2020-2021)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Tailles des images sur MapTool
+--------------------------------------------------------------------------------
+================================================================================
+
+# Élément                 L       H
+	Layout (token)          64      64
+	Portrait               (175)    175
+	State (full image)      64      64
+	State (grid image)      21      21
+
+================================================================================
+--------------------------------------------------------------------------------
+# Résultat des jets de dés
+--------------------------------------------------------------------------------
+================================================================================
+
+# Global Rules
+	Le résultat du jet égal à la différence entre le jet de dés et la valeur finale du test (p. ex. (3+3)-7 = -1)
+	Si le résultat du jet est strictement inférieur à 0, alors le test est une réusite
+	On retient alors la valeur absolue du résultat obtenu que l'on renomme Marge de Réussite et que l'on abrège en MR (p. ex. MR 3 pour un résultat de -3)
+	Si le résultat du jet est supérieur ou égal à 0, alors le test est une échec et on retient la valeur absolue du résultat renommé MR (Marge de Réussite)
+	On retient alors la valeur stricte du résultat obtenu que l'on renomme Marge d'Échec et que l'on abrège en ME (p. ex. ME 3 pour un résultat de 3)
+
+# Core Rules - Simulacres as per SangDragon (Casus Belli Hors-série n°11)
+	Réussite critique si 1 naturel sur chacun des deux dés
+	Échec critique si 6 naturel sur chacun des deux dés
+	Si valeur la finale du test de 2 ou moins, action impossible à réussir, réussite avec une MR de 0 en cas de critique (double 1)
+	Si valeur la finale du test de 13 ou moins, action impossible à manquer, échec avec une ME de 0 en cas critique (double 6)
+
+# Campaign Rules -- (Capitaine Vaudou)
+	Réussite critique si jet inférieur à 2 (càd. 1 naturel sur chacun des deux dés) + bonus de Talent + énergie Précision
+	Pas d'échec critique
+	Si l'énergie Puissance a été utilisée, on ajoute 1d6 par point de Puissance à la 'Marge' (qu'elle soit de Réussite ou d'Échec)
+	Si le jet est une réussite critique et que le Talent utilisé est supérieur à zéro, on ajoute 1d6 par point de Talent à la 'Marge' (qu'elle soit de Réussite ou d'Échec)
+
+# Exemple
+	« Fais-moi un test de Psychologie sous Cœur/Perception sur Humain à -2 avec un modificateur de +1 pour savoir si le PNJ te ment. »
+	« Ok ! J’ai l’aptitude Charmeur et mon Talent Psychologie est à -2. »
+	> Échec (ME 0, DSS -), presque : [1] + [5] = 6 contre 6 (+5 [Coeur] +2 [Perception] +1 [Humain] -2 [Difficulté] +1 [Aptitude] -2 [Talent] +1 [Modificateur]) (Seuil critique 2)
+	> Réussite (MR 2, DSS -), bon : [3] + [1] = 4 contre 6 (+5 [Coeur] +2 [Perception] +1 [Humain] -2 [Difficulté] +1 [Aptitude] -2 [Talent] +1 [Modificateur]) (Seuil critique 2)
+	> Échec critique (ME 6, DES 1), très mauvais : [6] + [6] = 12 contre 6 (+5 [Coeur] +2 [Perception] +1 [Humain] -2 [Difficulté] +1 [Aptitude] -2 [Talent] +1 [Modificateur]) (Seuil critique 2)
+	> Réussite critique (MR 4, DSS 1), très bon : [1] + [1] = 2 contre 6 (+5 [Coeur] +2 [Perception] +1 [Humain] -2 [Difficulté] +1 [Aptitude] -2 [Talent] +1 [Modificateur]) (Seuil critique 4)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Bonus d'énergies et de potentiels sur les jets de dés
+--------------------------------------------------------------------------------
+================================================================================
+
+# Puissance (au choix)
+	> +1d/pt à la MR
+
+# Rapidité
+	Réussite en cas d'égalité dans un Duel.
+	Temps de l'action diminué de (1/pt + DSS * 10) %.
+	Se battre contre 1 adversaire en même temps (1pt).
+	Se battre contre 2 adversaire en même temps (2pts).
+
+# Précision (au choix)
+	+1/pt aux chances de critique.
+	Viser ou cibler plus efficacement si l'action le permet.
+
+# Héroïsme
+	1pt  : Relance d'un dé.
+	2pts : Relancer deux fois les dés, un à un.
+	2pts : Réduction de -1 DSS sur la prochaine action hostile.
+
+================================================================================
+--------------------------------------------------------------------------------
+# Drapeaux
+--------------------------------------------------------------------------------
+================================================================================
+
+Dans sa définition la plus large, l'âge d'or de la piraterie s'étend des années 1650 aux années 1730. [https://fr.wikipedia.org/wiki/%C3%82ge_d%27or_de_la_piraterie]
+
+Drapeaux anglais [https://en.wikipedia.org/wiki/Flag_of_the_United_Kingdom]
+- Croix de Saint-George (Angleterre et Pays de Galles) : Pavillon blanc et croix rouge [https://en.wikipedia.org/wiki/File:Flag_of_England.svg]
+- Croix de Saint-André (Écosse) : Pavillon bleu et croix décussée blanche (i.e. sautoir, the Saltire) [https://commons.wikimedia.org/wiki/File:Flag_of_Scotland.svg]
+- Union Flag a.k.a. King's Colours (établi en 1606, adopté en 1707 et utilisé jusqu'en 1801) : Croix de Saint-George + Croix de Saint-André [https://commons.wikimedia.org/wiki/File:Flag_of_Great_Britain_(1707%E2%80%931800).svg]
+
+Drapeaux espagnols [https://en.wikipedia.org/wiki/Flag_of_Spain]
+- Armada espagnole (jusqu'en 1701) : Pavillon blanc et croix de Bourgogne (croix décussée rouge jonchée de nœuds de branches coupées) [https://commons.wikimedia.org/wiki/File:Flag_of_Cross_of_Burgundy.svg]
+* Armada espagnole (1701-1760) : Pavillon blanc et armoirie Bourbon-Anjou [https://commons.wikimedia.org/wiki/File:Bandera_de_Espa%C3%B1a_1701-1760.svg]
+
+Drapeaux français [https://en.wikipedia.org/wiki/Flag_of_France]
+- Marine royale : Pavillon blanc [https://commons.wikimedia.org/wiki/File:Drapeau_france_ancien_regime.svg]
+- Marine marchande (à partir de 1689) : Pavillon bleu et croix de Saint-Michel avec écu de France, couronne royale et colliers des ordres [https://commons.wikimedia.org/wiki/File:Naval_Flag_of_the_Kingdom_of_France_(Civil_Ensign).svg]
+* Marine marchande (avant 1661) : Pavillon rouge Fleurs de lys sur fond rouge avec armoirie royale [https://commons.wikimedia.org/wiki/File:Naval_Flag_of_the_Kingdom_of_France_(Merchant_Ensign).svg]
+* Galères royales : Pavillon rouge avec armoirie royale et fleurs de lys [https://commons.wikimedia.org/wiki/File:Naval_Flag_of_the_Kingdom_of_France_(Galley_Ensign).svg]
+* Compagnies franches de la marine : Quartiers rouges et bleus remplis de fleurs de lys or sur une croix blanche portant la devise : « PER MARRE ET TERRAS » en lettres d'or avec la foudre au centre [https://commons.wikimedia.org/wiki/File:Per_mar_et_terras.png]
+@ [https://www.ecole-navale.fr/Focus-des-mois-de-janvier-fevrier]
+@ [https://troisponts.files.wordpress.com/2014/11/tableau-des-pavillons-et-bannic3a8res-que-la-plus-part-des-nations-arborent-c3a0-la-mer.jpg]
+@ [http://www.heraldicscienceheraldique.com/les-pavillons-de-la-marine-marchande-en-nouvelle-france.html]
+
+Drapeau hollandais [https://en.wikipedia.org/wiki/Flag_of_the_Netherlands]
+- Prince's Flag (jusqu'en 1795) : Pavillon tricolore (orange, blanc, bleu) [https://commons.wikimedia.org/wiki/File:Prinsenvlag.svg]
+
+================================================================================
+--------------------------------------------------------------------------------
+# Valeurs minimales et maximales
+--------------------------------------------------------------------------------
+================================================================================
+
+# Type               Min     Max
+	Réserve            0       7
+	Composante         3       6
+	Moyen              1       4
+	Cible              -1      1
+	Énergie            0       3
+	Potentiel          0       3
+	Talent             -4 (0)  3
+	Aptitude           0       3
+
+================================================================================
+--------------------------------------------------------------------------------
+# Tables
+--------------------------------------------------------------------------------
+================================================================================
+
+# Difficulté      Chaîne          Script
+	–4              Très difficile  very_difficult
+	–2              Difficile       difficult
+	–1              Malaisée        not_easy
+	+0              Normale         normal
+	+1              Aisée           not_difficult
+	+2              Facile          easy
+	+4              Très facile     very_easy
+
+# Interprétation  Chaîne          Script -- CAMPAIGN
+	-9 à -11        Exceptionnel    exceptional
+	-6 à -8         Excellent       excellent
+	-3 à -5         Très bon        very_good
+	-1 à -2         Bon             good
+	+0              Normal          normal
+	+1              Presque         almost
+	+2 à +3         Mauvais         bad
+	+4 à +6         Très mauvais    very_bad
+	+7 et au-delà   Exécrable       execrable
+
+================================================================================
+--------------------------------------------------------------------------------
+# Traduction
+--------------------------------------------------------------------------------
+================================================================================
+
+# Talents                         Talents                         Script Name
+	Métier                          Trade                           *
+	Talent                          Skill                           *
+	Aptitude                        Ability                         *
+
+# Réserves                        Pools                           Script Name
+	PV (Points de Vie)              Hit Points                      hp + hp_max
+	PS (Points de Souffle)          Breath Points                   bp + bp_max
+	EP (Équilibre Psychique)        Mental Health                   mp + mp_max
+	PA (Points d'Aventure)          Adventure Points                ap
+! Dépassement (de soi)            Exceeding (oneself)             exceed
+! Buffs                           Buffs                           buffs
+
+# Composantes                     Components                      Script Name
+	Corps                           Body                            body
+	Cœur                            Heart                           heart
+	Esprit                          Mind                            mind
+
+# Moyens                          Means                           Script Name
+	Perception                      Perception                      perception
+	Action                          Action                          action
+	Résistance                      Resistance                      resistance
+
+# Cibles                          Targets                         Script Name
+	Nature                          Natural                         natural
+	Humain                          Human                           human
+	Artificiel                      Artificial                      artificial
+	Surnaturel                      Supernatural                    supernatural
+
+# Énergies                        Energies                        Script Name
+	Puissance                       Power                           power
+	Rapidité                        Speed                           speed
+	Précision                       Accuracy                        accuracy
+
+# Potentiels                      Potentials                      Script Name
+	Héroïsme                        Heroism                         heroism
+	Vaudou                          Voodoo                          voodoo
+	Magie blanche                   White Magic                     white_magic
+	Magie noire                     Black Magic                     black_magic
+! Kabbale                         Kabbalah                        *
+
+# Talents X                       Talents X                       Script Name
+	Architecture                    Architecture                    architecture
+	Artillerie                      Artillery                       artillery
+! Astronomie                      Astronomy                       astronomy
+	Ésotérisme                      Esotericism                     esotericism
+	Falsification                   Forgery                         forgery
+	Langue étrangère                Foreign Language                foreign_language
+	Lire sur les lèvres             Lip-reading                     lip_reading
+	Lire et écrire                  Read and Write                  read_and_write
+	Mathématiques                   Mathematics                     mathematics
+	Médecine                        Medicine                        medicine
+	Navigation                      Navigation                      navigation
+	Serrurerie                      Locksmithing                    locksmithing
+
+# Talents -4                      Talents -4                      Script Name
+	Armes à feu                     Fire Weapons                    fire_weapons
+	Art de la guerre                Art of War                      art_of_war
+	Cartographie                    Cartography                     cartography
+	Charpenterie                    Carpentry                       carpentry
+	Équitation                      Riding                          riding
+	Étiquette                       Etiquette                       etiquette
+	Histoire                        History                         history
+	Musique                         Music                           music
+	Natation                        Swimming                        swimming
+	Nature                          Nature                          nature
+	Pratiques vaudoues              Voodoo Pratices                 voodoo_pratices
+	Voilerie                        Sailmaking                      sailmaking
+
+# Talents -2                      Talents -2                      Script Name
+	Arme blanche                    Cold Weapon                     cold_weapon
+	Bricolage                       Handiwork                       handiwork
+	Comédie                         Comedy                          comedy
+	Commandement                    Command                         command
+	Escalade                        Climb                           climb
+	Histoire des pirates            Pirates History                 pirates_history
+	Langue du navire                Ship Language                   ship_language
+	Premiers soins                  First Aid                       first_aid
+	Survie                          Survival                        survival
+	Vol à la tire                   Pick-pocket                     pick_pocket
+
+# Talents 0                       Talents 0                       Script Name
+	Athlétisme                      Athletics                       athletics
+	Bagarre                         Brawling                        brawling
+	Commerce                        Trading                         trading
+	Cuisine                         Cooking                         cooking
+	Dessin                          Drawing                         drawing
+	Discours                        Speech                          speech
+	Discrétion                      Stealth                         stealth
+	Observation                     Watching                        watching
+
+================================================================================
+--------------------------------------------------------------------------------
+# Icônes
+--------------------------------------------------------------------------------
+================================================================================
+
+# Icône                                   Classe CSS (.icon)
+	(Vide)                                  .empty
+	Corps                                   .body
+	Cœur                                    .heart
+	Esprit                                  .mind
+	Perception                              .perception
+	Action                                  .action
+	Résistance                              .resistance
+	Nature                                  .nature
+	Humain                                  .human
+	Artificiel                              .artificial
+	Surnaturel                              .supernatural
+	Puissance                               .power
+	Rapidité                                .speed
+	Précision                               .accuracy
+	Héroïsme                                .heroism
+	Vaudou                                  .voodoo
+	Magie blanche                           .white-magic
+	Magie noire                             .black-magic
+	Kabbale                                 .kabbalah
+	Pratiques vaudoues                      .ritual
+	[Valider]                               .valid
+	[Fermer]                                .close
+	[Ajouter]                               .add
+	[Supprimer]                             .delete
+	[Réinitialiser]                         .reset
+	[Verrouiller]                           .lock
+	[Déverrouiller]                         .unlock
+	[Modifier]                              .edit
+	[Actualiser]                            .update
+	[Permuter]                              .switch
+	[Bourse]                                .sack
+	[Jet de dé]                             .roll
+	[Purger]                                .flush
+	[Déplier]                               .unfold
+	[Replier]                               .fold
+	[Note]                                  .note
+	[Drapeau]                               .flag
+	[Carte]                                 .map
+	[Crâne]                                 .skull
+	[Bière]                                 .beer
+	Dé à six faces (1)                      .d6-face1
+	Dé à six faces (2)                      .d6-face2
+	Dé à six faces (3)                      .d6-face3
+	Dé à six faces (4)                      .d6-face4
+	Dé à six faces (5)                      .d6-face5
+	Dé à six faces (6)                      .d6-face6
+	Dé à six faces (1) Crit                 .d6-face1.crit
+	Dé à six faces (6) Crit                 .d6-face6.crit
+
+# État (personnage)                       Classe CSS (.state)
+	Mort                                    .dead
+	Esoufflé                                .breathless
+	Crise de nerfs                          .nervous-breakdown
+	Inconscient                             .unconscious
+	Maudit                                  .cursed
+
+# État (navire)                           Classe CSS (.state)
+	Épave                                   .wreck
+	Coulé                                   .sunk
+	Aucun                                   .flag0
+	Pirate                                  .flag1
+	Royaume-uni                             .flag2
+	Anglais                                 .flag3
+	Écossais                                .flag4
+	Espagnol                                .flag5
+	Français, marine royale                 .flag6
+	Français, marine marchande              .flag7
+	Hollandais                              .flag8
+
+================================================================================
+--------------------------------------------------------------------------------
+# États
+--------------------------------------------------------------------------------
+================================================================================
+
+# Index   Personnage      Condition               Indicatif               Position
+	0       Mort            hp == 0                 dead                    full-size
+	1       Inconscient     hp > 0                  unconscious             full-size
+	2       Essouflé        hp > 0 && bp == 0       breathless              bottom-right
+	3       Crise de nerfs  hp > 0 && mp == 0       nervous_breakdown       bottom-right
+	4       Maudit          *                       cursed                  bottom-right
+
+# Index   Pavillon                                Indicatif               Position
+	5       Épave                                   wreck                   full-size
+	6       Coulé                                   sunk                    full-size
+	7       Aucun                                   none                    top-right
+	8       Pirate                                  pirate                  top-right
+	9       Royaume-uni                             uk                      top-right
+	10      Anglais                                 en                      top-right
+	11      Écossais                                scot                    top-right
+	12      Espagnol                                es                      top-right
+	13      Français, marine royale                 fr_royal                top-right
+	14      Français, marine marchande              fr_merch                top-right
+	15      Hollandais                              nl                      top-right
+
+================================================================================
+--------------------------------------------------------------------------------
+# Classes de navire
+--------------------------------------------------------------------------------
+================================================================================
+
+# Index   Navire                  Ship
+	0       Hors-classe             Unclassified
+	1       Chaloupe                Longboat
+	2       Petit garde-côte        Small Coast Guard Cutter
+	3       Sloop ou Garde-côte     Sloop or Coast Guard Cutter
+	4       Cotre                   Cutter
+	5       Brigantin               Brigantine
+	6       Goélette                Schooner
+	7       Marchand                Merchant
+	8       Galion                  Galleon
+	9       Corvette                Corvette
+	10      Frégate                 Frigate
+
+================================================================================
+--------------------------------------------------------------------------------
+# Météo
+--------------------------------------------------------------------------------
+================================================================================
+
+# Température
+	Affichage numérique en degré celsius
+	> Clic gauche = incrément (maintenir pour accélérer)
+	> Clic droit = décrément (maintenir pour accélérer)
+	> Shift + Clic gauche = valeur maximale
+	> Shift + Clic droit = valeur minimale
+	> Ctrl + Clic = réinitialisation
+
+# Vent
+	Direction cardinale représentée par une flèche
+	> Cliquer et maintenir en tournant le curseur autour de la flèche pour l'orienter
+
+# Ciel
+	Pictogramme ; cliquer et choisir dans le menu affiché en-dessous pour modifier
+	> (aucun)     empty
+	> Ensoleillé  sunny
+	> Voilé       veiled
+	> Nuageux     cloudy
+	> Brouillard  fog
+	> Bruine      drizzle
+	> Couvert     covered
+	> Pluvieux    rainy
+	> Orageux     stormy
+
+================================================================================
+--------------------------------------------------------------------------------
+# Couleurs CSS
+--------------------------------------------------------------------------------
+================================================================================
+
+# Usage           Code
+	text-light      rgb(248,248,160)
+	text-bright     rgb(255,224,64)
+	text-alt        rgb(24,128,112)
+	text-alt-light  rgb(48,160,144)
+	hover           rgb(160,96,24)
+	focus           rgb(112,24,24)
+	border          rgb(176,176,160)
+	fill            rgb(112,24,24)
+	fill-alt        rgb(24,64,64)
+	cell-dim        rgb(240,236,224)
+	cell-dark       rgb(208,200,176)
+	warning         rgb(240,24,24)
+	warning-react   rgb(112,24,24)
+	black           rgb(64,48,32)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Unités CSS
+--------------------------------------------------------------------------------
+================================================================================
+
+# Rem     Px
+	2       32
+	1.75    28
+	1.5     24
+	1.25    20
+	1.125   18
+	1.05    17
+	1       16
+	.875    14
+	.75     12
+
+================================================================================
+--------------------------------------------------------------------------------
+# Illegal Characters
+--------------------------------------------------------------------------------
+================================================================================
+
+# Macros
+	encode() : URL Encode => -,;()[]{}<>+=&#~
+	decode() : URL Decode => -%2C%26semi%3B%28%29%5B%5D%7B%7D%3C%3E%2B%3D%26%23%7E
+	encodeString() : encode a string using ASCII characters, optionally reduce length, replacing MapTool dialog illegal characters
+	> used to register a value in token properties
+	decodeString() : decode a ASCII characters encoded string replacing extra HTML entities by proper characters
+	> used to retrieve a value in HTML input
+
+# JavaScript
+	replaceIllegalChars() : replace MapTool unsupported characters by ASCII characters
+	> used to pass illegal characters along with macro URL
+
+# Test Strings
+	a<>,[];{}+<>&=-z — … × é É Æ @ " ' «» “” ‘’
+
+================================================================================
+--------------------------------------------------------------------------------
+# Player Token (i.e. assigned token ID)
+--------------------------------------------------------------------------------
+================================================================================
+
+# Icon          Player Token
+	No icon       Assigned
+	Pawn          Assigned AND Impersonated
+	Pawn + Cross  Assigned NOT Impersonated
+	Pawn + Crown  Assigned OTHER Impersonated
+	Pawn + PoI    Assigned NOT on Current Map

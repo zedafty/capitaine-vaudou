@@ -1,0 +1,415 @@
+<!-- ======================================================================= -->
+<!-- ----------------------------------------------------------------------- -->
+<!--                                                                         -->
+<!--                     CAPITAINE VAUDOU CHARACTER SHEET                    -->
+<!--                                                                         -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ======================================================================= -->
+
+[h: refresh = if (macro.args == "refresh", 1, 0)]
+
+[h: pid = getPlayerToken()]
+[h: map = getTokenMap(pid)]
+
+[h: zChar         = getProp("Char", pid, map)]
+[h: zPools        = getProp("Pools", pid, map)]
+[h: zComponents   = getProp("Components", pid, map)]
+[h: zMeans        = getProp("Means", pid, map)]
+[h: zTargets      = getProp("Targets", pid, map)]
+[h: zEnergies     = getProp("Energies", pid, map)]
+[h: zPotentials   = getProp("Potentials", pid, map)]
+[h: zSkills       = getProp("Skills", pid, map)]
+[h: zAbilities    = getProp("Abilities", pid, map)]
+[h: zInventory    = getProp("Inventory", pid, map)]
+[h: zSheetSection = getProp("SheetSection", pid, map)]
+[h: zLockInput    = getProp("LockInput", pid, map)]
+[h: zStoryToggle  = getProp("StoryToggle", pid, map)]
+
+[frame5("CharSheet", "title=Fiche de personnage;tabtitle=Personnage"): {
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="Main.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Sheet.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Char.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Subs.css@Lib:Frames">
+		[h: url = macroLinkText("checkFrame@Lib:Scripts", "none", "name=CharSheet;id=" + pid)]
+		<link rel="onChangeImpersonated" type="macro" href="[r: url]">
+		<style>
+		[r:"
+			.icon {background-image: url('" + tableImage('ui', 0) + "');}
+			.sheet .states figure i {background-image: url('" + tableImage('ui', 1) + "');}
+			.sheet.fx {background-image: url('" + tableImage('ui', 2) + "');}
+			.sheet.fx .wrap:before, .char.fx .wrap:after {background-image: url('" + tableImage('ui', 3) + "');}
+			.char.fx.pc header {background-image: url('" + tableImage('ui-char', 0) + "');}
+			.char.fx.npc header {background-image: url('" + tableImage('ui-char', 1) + "');}
+			.char .dead .portrait a:before {background-image: url('" + tableImage('ui-char', 2) + "');}
+			.char .unconscious .portrait a:before {background-image: url('" + tableImage('ui-char', 3) + "');}
+		"]
+		</style>
+	</head>
+
+	<body class="sheet char[r, if (getConst('css_fx') == 1): ' fx'][r: if (isPC(pid, map), ' pc', ' npc')]">
+
+		<a id="macrolink" class="hidden"></a>
+
+		<div id="tooltip" class="tooltip" style="display: none"></div>
+
+		<div class="wrap" style="opacity: [r: refresh];"><!-- BEGIN WRAP -->
+
+			<header><!-- BEGIN HEADLINE -->
+				<div class="col headline">
+					<div class="buttons"><!-- BUTTONS -->
+						<input id="lock_input" type="checkbox" [r: if (zLockInput == "1", "checked", "")] />
+						<span><i class="icon lock"></i></span>
+						<input id="toggle_story" type="checkbox" [r: if (zStoryToggle == "1", "checked", "")] />
+						<span><i class="icon story-furl"></i></span>
+					</div>
+					<div class="status"><!-- STATUS -->
+						<div class="left">
+							[h: first_name = decode(json.get(zChar, "first_name"))]
+							[h: surname = decode(json.get(zChar, "surname"))]
+							[h: last_name = decode(json.get(zChar, "last_name"))]
+							[h: age = json.get(zChar, "age")]
+							[h: citizenship = decode(json.get(zChar, "citizenship"))]
+							<span><strong>[r: if (first_name != "", "<code>" + first_name + "</code>", "")][r: if (first_name != "" && last_name != "", " ", "")][r: if (last_name != "", "<code>" + last_name + "</code>", "")]</strong>[r: if (surname != "" && (first_name != "" || last_name != ""), ", dit ", "")][r: if (surname != "", "<strong><code>" + surname + "</code></strong>", "")]</span>
+							[r, if (age != "" || citizenship != ""), code: {
+								<span>([r: if (age != "", "<code>" + age + "</code>&nbsp;ans", "")][r: if (age != "" && citizenship != "", ", ", "")][r: if (citizenship != "", "<code>" + citizenship + "</code>", "")])</span>
+							}]
+						</div>
+						<div class="left">
+							[h: trade = decode(json.get(zChar, "trade"))]
+							[h: speciality = decode(json.get(zChar, "speciality"))]
+							[h: sephiroth = decode(json.get(zChar, "sephiroth"))]
+							[h: sephiroth_type = json.get(zChar, "sephiroth_type")]
+							[r, if (trade != "" || speciality != ""), code: {
+								<span>[r: if (trade != "", "<code>" + trade + "</code>", "")][r: if (trade != "" && speciality != "", " ", "")][r: if (speciality != "", "(<code>" + speciality + "</code>)", "")]</span>
+							}]
+							[r, if (sephiroth != ""), code: {
+								<span>[r: getListString("sephiroth_type_list", sephiroth_type)]&nbsp;: <code>[r: sephiroth]</code></span>
+							}]
+						</div>
+					</div>
+					<div class="purse">
+						<input id="purse" type="checkbox" title="Ouvrir/Fermer la bourse"><!-- PURSE -->
+						<p><label for="purse"><i class="icon sack"></i> Bourse</label><code>[r: json.get(zChar, "purse")]</code>&nbsp;Ps</p>
+						<div class="inbox">
+							<form action="[r: macroLinkText('checkPurse@Lib:Scripts','all')]" method="json">
+								<input id="purse_amount" name="amount" type="number" value="0" />
+								<button id="purse_submit" type="submit" title="Ajouter ou retirer"><i class="icon valid"></i></button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col [r, foreach(state, getTokenStates('json', '*', pid, map), ''), code: {[r, if (getState(state, pid, map)): ' ' + replace(state, '_', '-')]}]">
+					<div class="portrait">
+						<a href="[r: macroLinkText('updateChar@Lib:Dialogs', 'none')]" title="&Eacute;diter le personnage"><img src="[r: if (getTokenPortrait("", pid, map) != '', getTokenPortrait(175, pid, map), getTokenImage(175, pid, map))]" /></a>
+					</div>
+					<div class="states">
+						<figure><i></i><figcaption>[r: getStateName("breathless")]</figcaption></figure>
+						<figure><i></i><figcaption>[r: getStateName("nervous_breakdown")]</figcaption></figure>
+						<figure><i></i><figcaption>[r: getStateName("cursed")]</figcaption></figure>
+					</div>
+				</div>
+				<div class="storyline hidden"><!-- STORYLINE -->
+					<textarea id="story" placeholder="Historique du personnage &hellip;" spellcheck="false">[r: getNotes(pid, map)]</textarea>
+				</div>
+			</header><!-- END HEADLINE -->
+
+			<main><!-- BEGIN MAIN -->
+
+				<input type="radio" name="nav" id="section1" [r: if (zSheetSection == "1", "checked", "")] />
+				<label for="section1">Personnage</label>
+				<input type="radio" name="nav" id="section2" [r: if (zSheetSection == "2", "checked", "")] />
+				<label for="section2">Comp&eacute;tences</label>
+				<input type="radio" name="nav" id="section3" [r: if (zSheetSection == "3", "checked", "")] />
+				<label for="section3">&Eacute;quipement</label>
+
+				<div id="character" class="section" data-section="1"><!-- BEGIN CHARACTER -->
+					<div class="col-1o2 gutter">
+						<!-- POOLS -->
+						<div class="caption pad"><h4>R&eacute;serves</h4></div>
+						<table id="pools" class="table bloat" data-lock>
+							<tr>
+								<th><abbr title="Points de vie">PV</abbr></th>
+								<th><abbr title="Points de souffle">PS</abbr></th>
+								<th><abbr title="&Eacute;quilibre psychologique">EP</abbr></th>
+								<th class="pc"><abbr title="Points d&rsquo;aventure">PA</abbr></th>
+							</tr>
+							<tr>
+								<td class="val-max">
+									<input id="hp" class="val" type="number" value="[r: json.get(zPools, 'hp')]" min="0" max="[r: json.get(zPools, 'hp_max')]" />
+									<span>/</span>
+									<input id="hp_max" class="max" type="number" value="[r: json.get(zPools, 'hp_max')]" min="0" max="7" />
+								</td>
+								<td class="val-max">
+									<input id="bp" class="val" type="number" value="[r: json.get(zPools, 'bp')]" min="0" max="[r: json.get(zPools, 'bp_max')]" />
+									<span>/</span>
+									<input id="bp_max" class="max" type="number" value="[r: json.get(zPools, 'bp_max')]" min="0" max="7" />
+								</td>
+								<td class="val-max">
+									<input id="mp" class="val" type="number" value="[r: json.get(zPools, 'mp')]" min="0" max="[r: json.get(zPools, 'mp_max')]" />
+									<span>/</span>
+									<input id="mp_max" class="max" type="number" value="[r: json.get(zPools, 'mp_max')]" min="0" max="7" />
+								</td>
+								<td class="pc"><input id="ap" type="number" value="[r: json.get(zPools, 'ap')]" min="0" max="200" />
+							</tr>
+						</table>
+						[r: body = json.get(zComponents, 'body')]
+						[r: heart = json.get(zComponents, 'heart')]
+						[r: mind = json.get(zComponents, 'mind')]
+						[r: perception = json.get(zMeans, 'perception')]
+						[r: action = json.get(zMeans, 'action')]
+						[r: resistance = json.get(zMeans, 'resistance')]
+						[r: global_value = floor((body + heart + mind + perception + action + body) / 6) * 2]
+						<div class="pc">
+							<div class="caption pad"><h4>Composantes et Moyens</h4></div>
+							<!-- COMPONENTS -->
+							<div class="col-bound">
+								<table id="components" class="table giant" data-lock>
+									<tr>
+										<th><i class="icon body"></i><br>Corps</th>
+										<td><input id="body" type="number" value="[r: body]" min="3" max="6" /></td>
+									</tr>
+									<tr>
+										<th><i class="icon heart"></i><br>C&oelig;ur</th>
+										<td><input id="heart" type="number" value="[r: heart]" min="3" max="6" /></td>
+									</tr>
+									<tr>
+										<th><i class="icon mind"></i><br>Esprit</th>
+										<td><input id="mind" type="number" value="[r: mind]" min="3" max="6" /></td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-plus">+</div>
+							<!-- MEANS -->
+							<div class="col-bound">
+								<table id="means" class="table giant" data-lock>
+									<tr>
+										<th><i class="icon perception"></i><br>Perception</th>
+										<td><input id="perception" type="number" value="[r: perception]" min="1" max="4" /></td>
+									</tr>
+									<tr>
+										<th><i class="icon action"></i><br>Action</th>
+										<td><input id="action" type="number" value="[r: action]" min="1" max="4" /></td>
+									</tr>
+									<tr>
+										<th><i class="icon resistance"></i><br>R&eacute;sistance</th>
+										<td><input id="resistance" type="number" value="[r: resistance]" min="1" max="4" /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="npc left">
+							<div class="caption pad"><h4>Valeur globale</h4></div>
+							<div id="global_value" data-lock>
+								<div><i class="icon body"></i>&nbsp;/&nbsp;<i class="icon heart"></i>&nbsp;/&nbsp;<i class="icon mind"></i>&nbsp;/&nbsp;<i class="icon perception"></i>&nbsp;/&nbsp;<i class="icon action"></i>&nbsp;/&nbsp;<i class="icon body"></i>&nbsp;/&nbsp;<i class="icon resistance"></i></div>
+								<input type="number" value="[r: global_value]" min="2" max="10" step="2" />
+							</div>
+						</div>
+					</div>
+					<div class="col-1o2 gutter">
+						<!-- TARGETS-->
+						<div class="caption pad"><h4>Cibles</h4></div>
+						<table id="targets" class="table tall" data-lock>
+							<tr>
+								<th><i class="icon natural"></i><br> Nature</th>
+								<th><i class="icon human"></i><br> Humain</th>
+								<th><i class="icon artificial"></i><br> Artificiel</th>
+								<th><i class="icon supernatural"></i><br> Surnaturel</th>
+							</tr>
+							<tr>
+								<td><input id="natural" type="number" value="[r: json.get(zTargets, 'natural')]" min="-1" max="1" /></td>
+								<td><input id="human" type="number" value="[r: json.get(zTargets, 'human')]" min="-1" max="1" /></td>
+								<td><input id="artificial" type="number" value="[r: json.get(zTargets, 'artificial')]" min="-1" max="1" /></td>
+								<td><input id="supernatural" type="number" value="[r: json.get(zTargets, 'supernatural')]" min="-1" max="1" /></td>
+							</tr>
+						</table>
+						<!-- ENERGIES -->
+						<div class="caption pad"><h4>&Eacute;nergies</h4></div>
+						<table id="energies" class="table tall" data-lock>
+							<tr>
+								<th><i class="icon power"></i><br> Puissance</th>
+								<th><i class="icon speed"></i><br> Rapidit&eacute;</th>
+								<th><i class="icon accuracy"></i><br> Pr&eacute;cision</th>
+							</tr>
+							<tr>
+								<td><input id="power" type="number" value="[r: json.get(zEnergies, 'power')]" min="0" max="3" /></td>
+								<td><input id="speed" type="number" value="[r: json.get(zEnergies, 'speed')]" min="0" max="3" /></td>
+								<td><input id="accuracy" type="number" value="[r: json.get(zEnergies, 'accuracy')]" min="0" max="3" /></td>
+							</tr>
+						</table>
+						<!-- POTENTIALS -->
+						<div class="caption pad"><h4>Potentiels</h4></div>
+						<table id="potentials" class="table tall variant" data-lock>
+							<tr>
+								<th><i class="icon heroism"></i><br> H&eacute;ro&iuml;sme</th>
+								<th><i class="icon voodoo"></i><br> Vaudou</th>
+								<th><i class="icon white-magic"></i><br> Magie Blanche</th>
+								<th><i class="icon black-magic"></i><br> Magie Noire</th>
+							</tr>
+							<tr>
+								<td><input id="heroism" type="number" value="[r: json.get(zPotentials, 'heroism')]" min="0" max="3" /></td>
+								<td><input id="voodoo" type="number" value="[r: json.get(zPotentials, 'voodoo')]" min="0" max="3" /></td>
+								<td><input id="white_magic" type="number" value="[r: json.get(zPotentials, 'white_magic')]" min="0" max="3" /></td>
+								<td><input id="black_magic" type="number" value="[r: json.get(zPotentials, 'black_magic')]" min="0" max="3" /></td>
+							</tr>
+						</table>
+					</div>
+				</div><!-- END CHARACTER -->
+				<div id="proficiencies" class="section" data-section="2" data-lock><!-- BEGIN PROFICIENCIES -->
+					<!-- SKILLS -->
+					<div id="skills" class="col-1o1 gutter">
+						<!-- SKILLS x -->
+						<div class="caption pad">
+							<h4>Talents</h4>
+							<div class="label" style="right: 5%;"><i class="icon note"></i><span>Note</span> <i class="icon skill-note"></i><span>Pirate + Note</span> <i class="icon skill"></i><span>Pirate</span> <i class="icon ritual"></i><span>Vaudou</span></div>
+						</div>
+						<table class="table">
+							<colgroup><col width="33"><col><col width="33"></colgroup>
+							<tr><th colspan="3">Talents X</th></tr>
+							<tr><td>&nbsp;</td><td>Architecture</td><td><input id="architecture" type="number" value="[r: json.get(zSkills, 'architecture')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Artillerie</td><td><input id="artillery" type="number" value="[r: json.get(zSkills, 'artillery')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Astronomie</td><td><input id="astronomy" type="number" value="[r: json.get(zSkills, 'astronomy')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>&Eacute;sot&eacute;risme</td><td><input id="esotericism" type="number" value="[r: json.get(zSkills, 'esotericism')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Falsification</td><td><input id="forgery" type="number" value="[r: json.get(zSkills, 'falsification')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Langue &eacute;trang&egrave;re</td><td><input id="foreign_language" type="number" value="[r: json.get(zSkills, 'foreign_language')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Lire sur les l&egrave;vres</td><td><input id="lip_reading" type="number" value="[r: json.get(zSkills, 'lip_reading')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Lire et &eacute;crire</td><td><input id="read_and_write" type="number" value="[r: json.get(zSkills, 'read_and_write')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Math&eacute;matiques</td><td><input id="mathematics" type="number" value="[r: json.get(zSkills, 'mathematics')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>M&eacute;decine</td><td><input id="medicine" type="number" value="[r: json.get(zSkills, 'medicine')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Navigation</td><td><input id="navigation" type="number" value="[r: json.get(zSkills, 'navigation')]" min="-4" max="3" data-nil /></td></tr>
+							<tr><td>&nbsp;</td><td>Serrurerie</td><td><input id="locksmithing" type="number" value="[r: json.get(zSkills, 'locksmithing')]" min="-4" max="3" data-nil /></td></tr>
+						</table>
+						<!-- SKILLS -4 -->
+						<table class="table">
+							<colgroup><col width="33"><col><col width="33"></colgroup>
+							<tr><th colspan="3">Talents -4</th></tr>
+							<tr><td><i class="icon skill"></i></td><td>Armes &agrave; feu</td><td><input id="fire_weapons" type="number" value="[r: json.get(zSkills, 'fire_weapons')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Art de la guerre</td><td><input id="art_of_war" type="number" value="[r: json.get(zSkills, 'art_of_war')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Cartographie</td><td><input id="cartography" type="number" value="[r: json.get(zSkills, 'cartography')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Charpenterie</td><td><input id="carpentry" type="number" value="[r: json.get(zSkills, 'carpentry')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>&Eacute;quitation</td><td><input id="riding" type="number" value="[r: json.get(zSkills, 'riding')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>&Eacute;tiquette</td><td><input id="etiquette" type="number" value="[r: json.get(zSkills, 'etiquette')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Histoire</td><td><input id="history" type="number" value="[r: json.get(zSkills, 'history')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><a href="javascript:void(0)" data-tooltip="Chant, danse, instrument"><i class="icon note"></i></a></td><td>Musique</td><td><input id="music" type="number" value="[r: json.get(zSkills, 'music')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Natation</td><td><input id="swimming" type="number" value="[r: json.get(zSkills, 'swimming')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><a href="javascript:void(0)" data-tooltip="Faune et flore"><i class="icon note"></i></a></td><td>Nature</td><td><input id="nature" type="number" value="[r: json.get(zSkills, 'nature')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><i class="icon ritual"></td><td>Pratiques vaudoues</td><td><input id="voodoo_pratices" type="number" value="[r: json.get(zSkills, 'voodoo_pratices')]" min="-4" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Voilerie</td><td><input id="sailmaking" type="number" value="[r: json.get(zSkills, 'sailmaking')]" min="-4" max="3" data-void /></td></tr>
+						</table>
+						<!-- SKILLS -2 -->
+						<table class="table">
+							<colgroup><col width="33"><col><col width="33"></colgroup>
+							<tr><th colspan="3">Talents -2</th></tr>
+							<tr><td class="rowspan"><i class="icon skill"></i></td><td class="rowspan">Arme blanche&nbsp;:</td><td rowspan="2"><input class="maxheight" id="cold_weapon" type="number" value="[r: json.get(zSkills, 'cold_weapon')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td><input id="cold_weapon_favored" type="text" value="[r: decodeString(json.get(zChar, 'cold_weapon_favored'))]" maxlength="32" placeholder="&hellip;" /></td></tr>
+							<tr><td>&nbsp;</td><td>Bricolage</td><td><input id="handiwork" type="number" value="[r: json.get(zSkills, 'handiwork')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td><a href="javascript:void(0)" data-tooltip="D&eacute;guisement"><i class="icon note"></i></a></td><td>Com&eacute;die</td><td><input id="comedy" type="number" value="[r: json.get(zSkills, 'comedy')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Commandement</td><td><input id="command" type="number" value="[r: json.get(zSkills, 'command')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Escalade</td><td><input id="climb" type="number" value="[r: json.get(zSkills, 'climb')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Histoire des pirates</td><td><input id="pirates_history" type="number" value="[r: json.get(zSkills, 'pirates_history')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></i></td><td>Langue du navire</td><td><input id="ship_language" type="number" value="[r: json.get(zSkills, 'ship_language')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Premiers soins</td><td><input id="first_aid" type="number" value="[r: json.get(zSkills, 'first_aid')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td><a href="javascript:void(0)" data-tooltip="P&ecirc;che, chasse, pistage, orientation"><i class="icon skill-note"></i></a></td><td>Survie</td><td><input id="survival" type="number" value="[r: json.get(zSkills, 'survival')]" min="-2" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Vol &agrave; la tire</td><td><input id="pick_pocket" type="number" value="[r: json.get(zSkills, 'pick_pocket')]" min="-2" max="3" data-void /></td></tr>
+						</table>
+						<!-- SKILLS 0-->
+						<table class="table">
+							<colgroup><col width="33"><col><col width="33"></colgroup>
+							<tr><th colspan="3">Talents 0</th></tr>
+							<tr><td>&nbsp;</td><td>Athl&eacute;tisme</td><td><input id="athletics" type="number" value="[r: json.get(zSkills, 'athletics')]" min="0" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></td><td>Bagarre</td><td><input id="brawling" type="number" value="[r: json.get(zSkills, 'brawling')]" min="0" max="3" data-void /></td></tr>
+							<tr><td><i class="icon skill"></td><td>Commerce</td><td><input id="trading" type="number" value="[r: json.get(zSkills, 'trading')]" min="0" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Cuisine</td><td><input id="cooking" type="number" value="[r: json.get(zSkills, 'cooking')]" min="0" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Dessin</td><td><input id="drawing" type="number" value="[r: json.get(zSkills, 'drawing')]" min="0" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Discours</td><td><input id="speech" type="number" value="[r: json.get(zSkills, 'speech')]" min="0" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Discr&eacute;tion</td><td><input id="stealth" type="number" value="[r: json.get(zSkills, 'stealth')]" min="0" max="3" data-void /></td></tr>
+							<tr><td>&nbsp;</td><td>Observation</td><td><input id="watching" type="number" value="[r: json.get(zSkills, 'watching')]" min="0" max="3" data-void /></td></tr>
+						</table>
+
+						<div id="abilities" data-lock>
+							<div class="caption pad"><h4>Aptitudes</h4></div>
+							<!-- ABILITIES -->
+							<div class="block">
+								<!-- BEGIN LOOP -->
+								[r, c(json.length(zAbilities)), code: {
+									[h: ability = json.get(zAbilities, roll.count)]
+									[r: "
+										<input type='text' value='" + decodeString(ability) + "' placeholder='Aptitude' maxlength='24' />
+									"]
+								}]
+								<!-- END LOOP -->
+								<button id="add_ability" type="button" title="Ajouter une aptitude" data-hide="[r: if (zLockInput == '1', 'true', 'false')]"><i class="icon add"></i></button>
+							</div>
+						</div>
+
+					</div>
+				</div><!-- END SKILLS -->
+
+				<div id="equipment" class="section" data-section="3"><!-- BEGIN EQUIPMENT -->
+					<div class="col-1o1 gutter">
+						<div class="caption pad"><h4>&Eacute;quipement</h4></div>
+						<div class="table-block">
+							<table class="table">
+								<colgroup>
+									<col width="30px">
+									<col>
+									<col width="100px">
+									<col width="45px">
+									<col width="80px">
+									<col width="30px" data-hide>
+									<col width="30px" data-hide>
+								</colgroup>
+								<thead>
+									<tr>
+										<th>&nbsp;</th>
+										<th class="left pad">Nom</th>
+										<th>Type</th>
+										<th><abbr title="Quantit&eacute;">Qt&eacute;</abbr></th>
+										<th>Valeur</th>
+										<th colspan="2" data-hide></th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- BEGIN LOOP -->
+									[r, c(json.length(zInventory)), code: {
+										[h: item = json.get(zInventory, roll.count)]
+										[h: note = json.get(item, "note")]
+										[h: note = if (note != "", "<a href='javascript:void(0)' data-tooltip='" + replace(decode(json.get(item, "note")), "'", "&rsquo;") +"' title='Voir note'><i class='icon note'></i></a>", "&nbsp;")]
+										[r: "
+											<tr draggable='true'>
+												<td>" + note + "</td>
+												<td class='left pad'>" + decode(json.get(item, 'name')) + "</td>
+												<td>" + getItemType(json.get(item, 'type')) + "</td>
+												<td>" + json.get(item, 'quantity') + "</td>
+												<td>" + json.get(item, 'value') + "&nbsp;Ps</td>
+												<td data-hide><a href='" + macroLinkText("editItem@Lib:Dialogs", "none", roll.count) + "' title='Modifier'><i class='icon edit'></i></a></td>
+												<td data-hide><a href='" + macroLinkText("deleteItem@Lib:Dialogs", "none", roll.count) + "' title='Supprimer'><i class='icon delete'></i></a></td>
+											</tr>
+										"]
+									}]
+									<!-- END LOOP -->
+								</tbody>
+							</table>
+							<div class="caption footline" data-hide><a href="[r: macroLinkText('addItem@Lib:Dialogs', 'none')]"><i class="icon add"></i><span>Ajouter</span></a></div>
+						</div>
+					</div>
+				</div><!-- END EQUIPMENT -->
+
+			</main><!-- END MAIN -->
+
+		<div><!-- END WRAP -->
+
+		<script>
+
+			[r: writeMainJavaScript()]
+			[r: writeSheetJavaScript()]
+			[r: writeCharJavaScript()]
+
+		</script>
+
+	</body>
+
+</html>
+}]

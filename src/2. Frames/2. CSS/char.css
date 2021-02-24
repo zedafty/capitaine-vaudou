@@ -1,0 +1,205 @@
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*              CAPITAINE VAUDOU CHARACTER CASCADING STYLE SHEET              */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/*        This Sheet MUST be linked AFTER Main.css and BEFORE Subs.css        */
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Character */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/* Purse */
+.char .purse {
+	position: absolute;
+	min-width: 140px;
+	right: 20px;
+	bottom: 0;
+	z-index: 1;
+}
+.char .purse .inbox {
+	position: absolute;
+	display: none;
+	top: -35px;
+	left: 0;
+}
+.char .purse .inbox input[type='number'] {
+	width: 95px;
+	font-size: 20px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.char .purse .inbox input[type='number']:focus {
+	border-radius: 0;
+}
+.char .purse .inbox button[type='submit'] {
+	width: 35px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.char .purse p {
+	margin: 2px 0 12px;
+	line-height: 26px;
+}
+.char #purse {
+	position: absolute;
+	left: 0;
+	top: 2px;
+	opacity: 0;
+}
+.char .purse code {
+	color: rgb(24,24,24);
+}
+.char #purse,
+.char .purse label {
+	width: 100px;
+	height: 26px;
+}
+.char .purse label {
+	margin-right: 5px;
+	padding-left: 4px;
+	font-weight: bold;
+	border-radius: 3px;
+}
+.char .purse label i {vertical-align: middle;}
+.char .purse label:before,
+.char .purse label:after {font-weight: normal;}
+.char .purse label:after {
+	content: ':';
+	margin-left: 4px;
+}
+.char #purse:focus + p label,
+.char #purse:hover + p label {background-color: rgb(255,240,64);}
+.char #purse:checked + p label {color: rgb(160,96,24);}
+.char #purse:checked + p label:before {
+	content: '';
+	position: absolute;
+	display: inline-block;
+	top: -20px;
+	left: -15px;
+	width: 15px;
+	height: 32px;
+	text-align: center;
+	border: 2px solid rgb(64,48,24);
+	border-right: 0;
+}
+.char #purse:checked ~ .inbox {display: inline-block;}
+
+/* States */
+.char .states figure:nth-child(1) i {background-position: 0 0;}
+.char .states figure:nth-child(2) i {background-position: -32px 0;}
+.char .states figure:nth-child(3) i {background-position: -64px 0;}
+.char .breathless .states figure:nth-child(1),
+.char .nervous-breakdown .states figure:nth-child(2),
+.char .cursed .states figure:nth-child(3) {
+	display: inline-block;
+}
+
+/* Character */
+.char #character .col-bound {width: 45%;}
+.char #character .col-plus {
+	width: 10%;
+	padding-top: 1px;
+	font-size: 32px;
+	line-height: 200px;
+}
+
+/* NPC */
+.char #global_value {
+	line-height: 50px;
+	text-align: center;
+	font-size: 16px;
+	color: rgba(255,255,255,.5);
+	border: 2px solid rgb(24,64,64);
+	border-top: 0;
+	background-color: rgb(24,64,64);
+}
+.char #global_value i {
+	vertical-align: middle;
+}
+.char #global_value input {
+	height: 31px;
+	font-size: 18px;
+	border: 0;
+}
+.char #global_value input[readonly] {
+	background-color: white
+}
+
+/* Skills */
+.char #skills {text-align: left;}
+.char #skills .table {
+	display: inline-table;
+	width: 30%;
+	margin-left: 1.5%;
+	margin-right: 1.5%;
+}
+.char #skills .table:nth-of-type(4) {margin-top: 15px;}
+.char #skills .table [title] {border-bottom: 1px dotted rgb(0,0,0);}
+.char #skills .table [title]:hover {background-color: rgba(0,0,0,.125);}
+.char #skills .table input[type='number'] {transition: opacity .25s;}
+.char #skills .table a {height: 30px;}
+.char #skills .table .icon {margin-top: 0;}
+.char #skills .table a .icon {margin-top: 6px;}
+
+/* Abilities */
+.char #abilities {
+	display: inline-block;
+	width: 60%;
+	margin-left: 1.5%;
+	margin-right: 1.5%;
+}
+.char #abilities input[type='text'] {
+	width: 140px;
+	font-size: 14px;
+}
+.char #abilities input {
+	border: 6px solid rgb(32,32,32);
+	box-sizing: content-box;
+	border-radius: 0;
+}
+.char.pc #abilities input {border-color: rgb(112,24,24);}
+.char.npc #abilities input {border-color: rgb(24,64,64);}
+.char #abilities button {
+	width: 30px;
+	margin: 6px;
+}
+.char #abilities input[readonly] {
+	background-color: rgb(240,236,224);
+}
+.char #abilities input[readonly]:nth-child(even) {
+	background-color: white;
+}
+
+/* Colored Cells */
+.char #character .table td:nth-child(odd),
+.char #character .table tr:nth-child(odd) td,
+.char #skills .table td:nth-child(1),
+.char #skills .table td:nth-child(3),
+.char #equipment .table tr:nth-child(even) td {
+	background-color: rgb(240,236,224);
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Responsive Design */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+@media screen and (max-width: 640px) {
+	.char .status div:nth-child(2) span + span:before {display: none;}
+	.char .status .surname {display: none;}
+	.char #skills .table {width: 47%;}
+	.char #skills .table:nth-of-type(3) {margin-top: 15px;}
+	.char #abilities {
+		display: block;
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}

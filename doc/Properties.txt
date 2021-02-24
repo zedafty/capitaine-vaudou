@@ -1,0 +1,74 @@
+================================================================================
+--------------------------------------------------------------------------------
+# Capitaine Vaudou MapTool Framework : Properties
+--------------------------------------------------------------------------------
+================================================================================
+
+	MapTool Campaign Properties
+
+================================================================================
+--------------------------------------------------------------------------------
+# Foreword Notes
+--------------------------------------------------------------------------------
+================================================================================
+
+	Token properties use camel case format starting with upper case letter.
+	e.g. MyMagicVar : 1.0
+	Token properties are ALWAYS referenced by their name in owner macros (and can be called and set as it).
+	e.g. [r: MyMagicVar] => 1.0
+	e.g. [r: MyMagicVar = 3.14] => MyMagicVar: 3.14
+	MapTool properties inside owner macros aren't case sensitive.
+	This can produce various name conflicts...
+	Chosen workaround (for now) is avoid naming local variables the same as token properties
+	e.g. if [h: mymagicvar = "NaN"] then [r: MyMagicVar] => "NaN" instead of 3.14
+	JSON key use lower case literals separated with underscores.
+	e.g. my_magic_var : 3.14
+
+================================================================================
+--------------------------------------------------------------------------------
+# Basic : Character Properties (PC and NPC)
+--------------------------------------------------------------------------------
+================================================================================
+
+Char: {"first_name": "Guybrush", "last_name": "Threepwood", "surname": "", "age": "", "gender": "", "citizenship": "", "trade": "Pirate", "speciality": "", "sephiroth": "", "sephiroth_type": 0, "cold_weapon_favored" : "", "purse" : 0}
+Pools: {"hp": 4, "hp_last" : 4, "hp_max": 4, "hp_spent": 0, "bp": 4, "bp_last": 4, "bp_max": 4, "mp": 4, "mp_last": 4, "mp_max": 4, "mp_spent": 0, "ap": 0}
+Components: {"body": 3, "heart": 3, "mind": 3}
+Means: {"perception": 1, "action": 1, "resistance": 1}
+Targets: {"natural": 0, "human": 0, "artificial": 0, "supernatural": 0}
+Energies: {"power": 0, "speed": 0, "accuracy": 0}
+Potentials: {"heroism": 0, "voodoo": 0, "white_magic": 0, "black_magic": 0}
+Skills: {"architecture": "nil", "artillery": "nil", "astronomy": "nil", "esotericism": "nil", "forgery": "nil", "foreign_language": "nil", "lip_reading": "nil", "read_and_write": "nil", "mathematics": "nil", "medicine": "nil", "navigation": "nil", "locksmithing": "nil"}
+Abilities: []
+Inventory: [{"name": "Cuiller", "type": 1, "quantity": 1, "value": 0, "note": ""}]
+*@HitPoints(PV): [r:json.get(Pools, "hp")] / [r:json.get(Pools, "hp_max")]
+*@BreathPoints(PS): [r:json.get(Pools, "bp")] / [r:json.get(Pools, "bp_max")]
+*@MindPoints(EP): [r:json.get(Pools, "mp")] / [r:json.get(Pools, "mp_max")]
+SheetSection: 1
+LockInput: 0
+StoryToggle: 0
+SkillToggle: 0
+DiceRollerSide: left
+DiceRollerPane: unfold
+
+================================================================================
+--------------------------------------------------------------------------------
+# Ship : Ship Properties
+--------------------------------------------------------------------------------
+================================================================================
+
+Ship: {"name": "Black Pearl", "class": "3", "flag" : 0, "captain" : ""}
+Points: {"sail_pts": 9, "sail_max": 9, "hull_pts": 9, "hull_max": 9, "hull_last": 9}
+Crew: {"maneuver": 8, "maneuver_min": 8, "additional": 0, "additional_max": 35, "crew_total": 8, "crew_max": 50, "vacant" : 0}
+Staff: {"captain_id": "", "captain_name": "", "captain_action": "0", "captain_navigation": "-4", "captain_artificial": "-1", "skipper_id": "", "skipper_name": "", "skipper_mind": "0", "skipper_action": "0", "skipper_navigation": "-4", "skipper_artificial": "-1", "gunner_id": "", "gunner_name": "", "gunner_perception": "0", "gunner_artillery": "-4", "gunner_natural": "-1", "gunner_human": "-1", "gunner_artificial": "-1", "gunner_supernatural": "-1"}
+Sailing: {"speed_day": 90, "speed_maneuver": 5, "draught": 1, "maneuver_penalty" : 0, "speed_maneuver_modifier": 0, , "toggle_speed_maneuver_modifier": 0}
+Cannonade: {"distance": "null", "target": "null"}
+Cannonballs: {"hollowed": 0, "chained": 0, "canister": 0, "heated": 0, "last" : ""}
+Cannons1: {"port1_pts": 8, "port1_cur": 8, "port1_max": 8, "port1_msb" : 2, "star1_pts": 8, "star1_cur": 8, "star1_max ": 8, "star1_msb" : 2}
+Cannons2: {"port2_pts": 0, "port2_cur": 0, "port2_max": 0, "port2_msb" : 0, "star2_pts": 0, "star2_cur": 0, "star2_max": 0, "star2_msb" : 0}
+Inventory: [{"name": "Caisse de rhum", "type": 3, "quantity": 50, "value": 300, "note": ""}]
+*@SailPoints(Voile): [r:json.get(Points, "sail_pts")] / [r:json.get(Points, "sail_max")]
+*@HullPoints(Coque): [r:json.get(Points, "hull_pts")] / [r:json.get(Points, "hull_max")]
+SheetSection: 1
+LockInput: 0
+StoryToggle: 0
+GroupToggle: [0, 0, 0]

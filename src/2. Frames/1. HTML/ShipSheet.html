@@ -1,0 +1,543 @@
+<!-- ======================================================================= -->
+<!-- ----------------------------------------------------------------------- -->
+<!--                                                                         -->
+<!--                       CAPITAINE VAUDOU SHIP SHEET                       -->
+<!--                                                                         -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ======================================================================= -->
+
+[h: refresh = if (macro.args == "refresh", 1, 0)]
+
+[h: pid = getPlayerToken()]
+[h: map = getTokenMap(pid)]
+
+[h: zShip         = getProp("Ship", pid, map)]
+[h: zPoints       = getProp("Points", pid, map)]
+[h: zSailing      = getProp("Sailing", pid, map)]
+[h: zCrew         = getProp("Crew", pid, map)]
+[h: zStaff        = getProp("Staff", pid, map)]
+[h: zCannonade    = getProp("Cannonade", pid, map)]
+[h: zCannonballs  = getProp("Cannonballs", pid, map)]
+[h: zCannons1     = getProp("Cannons1", pid, map)]
+[h: zCannons2     = getProp("Cannons2", pid, map)]
+[h: zInventory    = getProp("Inventory", pid, map)]
+[h: zSheetSection = getProp("SheetSection", pid, map)]
+[h: zLockInput    = getProp("LockInput", pid, map)]
+[h: zStoryToggle  = getProp("StoryToggle", pid, map)]
+[h: zGroupToggle  = getProp("GroupToggle", pid, map)]
+
+[frame5("ShipSheet", "title=Fiche de navire;tabtitle=Navire"): {
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="Main.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Sheet.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Ship.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Subs.css@Lib:Frames">
+		[h: url = macroLinkText("checkFrame@Lib:Scripts", "none", "name=ShipSheet;id=" + pid)]
+		<link rel="onChangeImpersonated" type="macro" href="[r: url]">
+		<style>
+		[r:"
+			.icon {background-image: url('" + tableImage('ui', 0) + "');}
+			.sheet .states figure i {background-image: url('" + tableImage('ui', 1) + "');}
+			.sheet.fx {background-image: url('" + tableImage('ui', 2) + "');}
+			.sheet.fx .wrap:before, .sheet.fx .wrap:after {background-image: url('" + tableImage('ui', 3) + "');}
+			.ship.fx.flag0 header {background-image: url('" + tableImage('ui-ship', 0) + "');}
+			.ship.fx.flag1 header {background-image: url('" + tableImage('ui-ship', 1) + "');}
+			.ship.fx.flag2 header {background-image: url('" + tableImage('ui-ship', 2) + "');}
+			.ship.fx.flag3 header {background-image: url('" + tableImage('ui-ship', 3) + "');}
+			.ship.fx.flag4 header {background-image: url('" + tableImage('ui-ship', 4) + "');}
+			.ship.fx.flag5 header {background-image: url('" + tableImage('ui-ship', 5) + "');}
+			.ship.fx.flag6 header {background-image: url('" + tableImage('ui-ship', 6) + "');}
+			.ship.fx.flag7 header {background-image: url('" + tableImage('ui-ship', 7) + "');}
+			.ship.fx.flag8 header {background-image: url('" + tableImage('ui-ship', 8) + "');}
+			.ship .wreck .portrait a:before {background-image: url('" + tableImage('ui-ship', 9) + "');}
+			.ship .sunk  .portrait a:before {background-image: url('" + tableImage('ui-ship', 10) + "');}
+		"]
+		</style>
+	</head>
+
+	<body class="sheet ship flag[r: json.get(zShip, 'flag')][r, if (getConst('css_fx') == 1): ' fx'][r: if (isPC(pid, map), ' pc', ' npc')]">
+
+		<a id="macrolink" class="hidden"></a>
+
+		<div id="tooltip" class="tooltip" style="display: none"></div>
+
+		<div class="wrap" style="opacity: [r: refresh];"><!-- BEGIN WRAP -->
+
+			[h: captain_name = json.get(zStaff, "captain_name")]
+			[h: skipper_name = json.get(zStaff, "skipper_name")]
+			[h: gunner_name = json.get(zStaff, "gunner_name")]
+
+			<header><!-- BEGIN HEADLINE -->
+				<div class="col headline">
+					<div class="buttons"><!-- BUTTONS -->
+						<input id="lock_input" type="checkbox" [r: if (zLockInput == "1", "checked", "")] />
+						<span><i class="icon lock"></i></span>
+						<input id="toggle_story" type="checkbox" [r: if (zStoryToggle == "1", "checked", "")] />
+						<span><i class="icon story-furl"></i></span>
+					</div>
+					<div class="status"><!-- STATUS -->
+						<div class="left">
+							[h: name = decode(json.get(zShip, "name"))]
+							[h: class = getListString("ship_class_list", json.get(zShip, "class"))]
+							<span><strong>[r: if (name != "", "<code>" + name + "</code>", "")]</strong></span>
+							<span>[r: if (class != "", "(<code>" + class + "</code>)", "")]</span>
+						</div>
+						<div class="left">
+							[r, if (captain_name != ""): "<span>Cpt. <code>" + captain_name + "</code></span>"]
+						</div>
+					</div>
+				</div>
+				<div class="col[r, if (getState('wreck', pid, map)): ' wreck'][r, if (getState('sunk', pid, map)): ' sunk']">
+					<div class="portrait">
+						<a href="[r: macroLinkText('updateShip@Lib:Dialogs', 'none')]" title="&Eacute;diter le navire"><img src="[r: if (getTokenPortrait("", pid, map) != '', getTokenPortrait(175, pid, map), getTokenImage(175, pid, map))]" /></a>
+					</div>
+					<div class="states">
+						[h: flag = json.get(zShip, 'flag')]
+						<figure><i></i><figcaption>[r: if (flag > 0, getListString("ship_flag_list", flag), "")]</figcaption></figure>
+					</div>
+				</div>
+				<div class="storyline hidden"><!-- STORYLINE -->
+					<textarea id="story" placeholder="Historique du navire &hellip;" spellcheck="false">[r: getNotes(pid, map)]</textarea>
+				</div>
+			</header><!-- END HEADLINE -->
+
+			<main><!-- BEGIN MAIN -->
+
+				<input type="radio" name="nav" id="section1" [r: if (zSheetSection == "1", "checked", "")] />
+				<label for="section1">Navire</label>
+				<input type="radio" name="nav" id="section2" [r: if (zSheetSection == "2", "checked", "")] />
+				<label for="section2"> Cargaison</label>
+
+				<div id="ship" class="section" data-section="1"><!-- BEGIN SHIP -->
+
+					<div class="col-1o2 gutter">
+
+						<!-- POINTS -->
+						<div class="caption pad">
+							<h4>Points</h4>
+							<div class="label" style="right: 6%;"><abbr title="Malus &agrave; la vitesse de man&oelig;uvre">MVM</abbr></div>
+						</div>
+						<table id="points" class="table" data-lock>
+							<colgroup><col width="40%"><col width="40%"><col width="20%"></colgroup>
+							<tr>
+								<th>Voile</th>
+								<td class="val-max">
+									[h: sail_max = json.get(zPoints, 'sail_max')]
+									<input id="sail_pts" class="val" type="number" value="[r: json.get(zPoints, 'sail_pts')]" min="0" max="[r: sail_max]" />
+									<span>/</span>
+									<input id="sail_max" class="max" type="number" value="[r: sail_max]" min="3" max="[r: getConst('sail_pts_max')]" />
+								</td>
+								<td rowspan="2" class="title" title=""><output id="maneuver_penalty" class="output">0</output></td>
+							</tr>
+							<tr>
+								<th>Coque</th>
+								<td class="val-max">
+									[h: hull_max = json.get(zPoints, 'hull_max')]
+									<input id="hull_pts" class="val" type="number" value="[r: json.get(zPoints, 'hull_pts')]" min="0" max="[r: hull_max]" />
+									<span>/</span>
+									<input id="hull_max" class="max" type="number" value="[r: hull_max]" min="3" max="[r: getConst('hull_pts_max')]" />
+								</td>
+							</tr>
+						</table>
+
+						<!-- CREW -->
+						<div class="caption pad"><h4>&Eacute;quipage</h4></div>
+						<table id="crew" class="table" style="width: 80%;" data-lock>
+							<colgroup><col width="50%"><col width="50%"></colgroup>
+							[h: crew_max = json.get(zCrew, 'crew_max')]
+							<tr>
+								<th>Total</th>
+								<td class="val-max">
+									<input id="crew_total" class="val" type="number" value="[r: json.get(zCrew, 'crew_total')]" min="0" max="[r: crew_max]" />
+									<span>/</span>
+									<input id="crew_max" class="max" type="number" value="[r: crew_max]" min="0" max="[r: getConst('crew_max')]" title="Maximum de membres d&rsquo;&eacute;quipage pr&eacute;sent sur le navire" />
+								</td>
+							</tr>
+							<tr>
+								<th><dfn title="Membres d&rsquo;&eacute;quipage affect&eacute;s à la navigation">Man&oelig;uvre</dfn></th>
+								<td class="val-max">
+									<output id="maneuver" class="val">0</output>
+									<span>/</span>
+									<input id="maneuver_min" class="max" type="number" value="[r: json.get(zCrew, 'maneuver_min')]" min="0" max="[r: getConst('crew_max')]" title="Minimum de membres d&rsquo;&eacute;quipage affect&eacute; &agrave; la man&oelig;uvre" />
+								</td>
+							</tr>
+							<tr>
+								<th><dfn title="Membres d&rsquo;&eacute;quipage affect&eacute;s à la canonnade">Compl&eacute;ment</dfn></th>
+								<td class="val-max">
+									<output id="additional" class="val">0</output>
+									<span>/</span>
+									<input id="additional_max" class="max" type="number" value="[r: json.get(zCrew, 'additional_max')]" min="0" max="[r: getConst('crew_max')]" title="Maximum de membres d&rsquo;&eacute;quipage compl&eacute;mentaire" />
+								</td>
+							</tr>
+							<tr>
+								<th><dfn title="Membres d&rsquo;&eacute;quipage laiss&eacute;s inoccup&eacute;s">Vacant</dfn></th>
+								<td>
+									<output id="vacant">[r: json.get(zCrew, 'vacant')]</output>
+								</td>
+							</tr>
+						</table>
+
+						<!-- STAFF -->
+						<div class="caption pad">
+							<h4>Ma&icirc;tres d&rsquo;&eacute;quipage</h4>
+							<div class="label" style="right: 5%;"><dfn title="Modificateur variable selon le test &agrave; r&eacute;aliser">Valeur</dfn></div>
+						</div>
+						[h: group1 = json.get(zGroupToggle, 0)]
+						[h: group2 = json.get(zGroupToggle, 1)]
+						[h: group3 = json.get(zGroupToggle, 2)]
+						<table id="staff" class="table" style="width: 100%;" data-lock>
+							<colgroup><col width="40%"><col width="40%"><col width="20%"></colgroup>
+							[h: captain_action = json.get(zStaff, 'captain_action')]
+							[h: captain_navigation = json.get(zStaff, 'captain_navigation')]
+							[h: captain_artificial = json.get(zStaff, 'captain_artificial')]
+							<tr class="ctrl-row">
+								<th class="ctrl-cell"><a href="javascript:void(0)" class="ctrl-icon left" title="[r: if (group1 == 0, 'D&eacute;grouper', 'Regrouper')]" data-group-ctrl="1" data-grouped="[r: if (group1 == 0, 'true', 'false')]"><i class="icon [r: if (group1 == 0, 'degroup', 'regroup')]"></i></a><a href="[r: macroLinkText('copyTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=captain')]" title="Copier les propri&eacute;t&eacute;s du pion s&eacute;lectionn&eacute;"><span>Capitaine</span></a><a href="[r: macroLinkText('clearTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=captain')]" class="ctrl-icon right[r, if (captain_name == ''): ' hidden']" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+								<td><output id="captain_name">[r: if (captain_name != "", captain_name, "&mdash;")]</output></td>
+								<td class="title" title="[r: 'Action (' + captain_action + ') + Navigation (' + captain_navigation + ') + Artificiel (' + captain_artificial + ')']"><output id="captain_val">[r: captain_action + captain_navigation + captain_artificial]</output></td>
+							</tr>
+							<tr class="[r: if (group1 == 0, 'hidden', '')]" data-group="1">
+								<th><i class="icon action"></i></th>
+								<td><em><small>Action</small></em></td>
+								<td><input id="captain_action" type="number" value="[r: captain_action]" min="0" max="4" /></td>
+							</tr>
+							<tr class="[r: if (group1 == 0, 'hidden', '')]" data-group="1">
+								<th><i class="icon stripe"></i></th>
+								<td><em><small>Navigation</small></em></td>
+								<td><input id="captain_navigation" type="number" value="[r: captain_navigation]" min="-4" max="3" /></td>
+							</tr>
+							<tr class="[r: if (group1 == 0, 'hidden', '')]" data-group="1">
+								<th><i class="icon artificial"></i></th>
+								<td><em><small>Artificiel</small></em></td>
+								<td><input id="captain_artificial" type="number" value="[r: captain_artificial]" min="-4" max="3" /></td>
+							</tr>
+							[h: skipper_mind = json.get(zStaff, 'skipper_mind')]
+							[h: skipper_action = json.get(zStaff, 'skipper_action')]
+							[h: skipper_navigation = json.get(zStaff, 'skipper_navigation')]
+							[h: skipper_artificial = json.get(zStaff, 'skipper_artificial')]
+							<tr class="ctrl-row">
+								<th class="ctrl-cell"><a href="javascript:void(0)" class="ctrl-icon left" title="[r: if (group2 == 0, 'D&eacute;grouper', 'Regrouper')]" data-group-ctrl="2" data-grouped="[r: if (group2 == 0, 'true', 'false')]"><i class="icon [r: if (group2 == 0, 'degroup', 'regroup')]"></i></a><a href="[r: macroLinkText('copyTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=skipper')]" title="Copier les propri&eacute;t&eacute;s du pion s&eacute;lectionn&eacute;"><span>Navigateur</span></a><a href="[r: macroLinkText('clearTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=skipper')]" class="ctrl-icon right[r, if (skipper_name == ''): ' hidden']" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+								<td><output id="skipper_name">[r: if (skipper_name != "", skipper_name, "&mdash;")]</output></td>
+								<td class="title" title="[r: 'Esprit (' + skipper_mind + ') + Action (' + skipper_action + ') + Navigation (' + skipper_navigation + ') + Artificiel (' + skipper_artificial + ')']"><output id="skipper_val">[r: skipper_mind + skipper_action + skipper_navigation + skipper_artificial]</output></td>
+							</tr>
+							<tr class="[r: if (group2 == 0, 'hidden', '')]" data-group="2">
+								<th><i class="icon mind"></i></th>
+								<td><em><small>Esprit</small></em></td>
+								<td><input id="skipper_mind" type="number" value="[r: skipper_mind]" min="0" max="6" /></td>
+							</tr>
+							<tr class="[r: if (group2 == 0, 'hidden', '')]" data-group="2">
+								<th><i class="icon action"></i></th>
+								<td><em><small>Action</small></em></td>
+								<td><input id="skipper_action" type="number" value="[r: skipper_action]" min="0" max="4" /></td>
+							</tr>
+							<tr class="[r: if (group2 == 0, 'hidden', '')]" data-group="2">
+								<th><i class="icon stripe"></i></th>
+								<td><em><small>Navigation</small></em></td>
+								<td><input id="skipper_navigation" type="number" value="[r: skipper_navigation]" min="-4" max="3" /></td>
+							</tr>
+							<tr class="[r: if (group2 == 0, 'hidden', '')]" data-group="2">
+								<th><i class="icon artificial"></i></th>
+								<td><em><small>Artificiel</small></em></td>
+								<td><input id="skipper_artificial" type="number" value="[r: skipper_artificial]" min="-1" max="1" /></td>
+							</tr>
+							[h: gunner_perception = json.get(zStaff, 'gunner_perception')]
+							[h: gunner_artillery = json.get(zStaff, 'gunner_artillery')]
+							<tr class="ctrl-row">
+								<th class="ctrl-cell"><a href="javascript:void(0)" class="ctrl-icon left" title="[r: if (group3 == 0, 'D&eacute;grouper', 'Regrouper')]" data-group-ctrl="3" data-grouped="[r: if (group3 == 0, 'true', 'false')]"><i class="icon [r: if (group3 == 0, 'degroup', 'regroup')]"></i></a><a href="[r: macroLinkText('copyTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=gunner')]" title="Copier les propri&eacute;t&eacute;s du pion s&eacute;lectionn&eacute;"><span>Canonnier</span></a><a href="[r: macroLinkText('clearTokenProp@Lib:Scripts', 'self', 'pid=' + pid + '; role=gunner')]" class="ctrl-icon right[r, if (gunner_name == ''): ' hidden']" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+								<td><output id="gunner_name">[r: if (gunner_name != "", gunner_name, "&mdash;")]</output></td>
+								<td class="title" title="[r: 'Perception (' + gunner_perception + ') + Artillerie (' + gunner_artillery + ')']"><output id="gunner_val">[r: gunner_perception + gunner_artillery]</output></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon perception"></i></th>
+								<td><em><small>Perception</small></em></td>
+								<td><input id="gunner_perception" type="number" value="[r: gunner_perception]" min="0" max="4" /></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon stripe"></i></th>
+								<td><em><small>Artillerie</small></em></td>
+								<td><input id="gunner_artillery" type="number" value="[r: gunner_artillery]" min="-4" max="3" /></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon natural"></i></th>
+								<td><em><small>Nature</small></em></td>
+								<td><input id="gunner_natural" type="number" value="[r: json.get(zStaff, 'gunner_natural')]" min="-1" max="1" /></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon human"></i></th>
+								<td><em><small>Humain</small></em></td>
+								<td><input id="gunner_human" type="number" value="[r: json.get(zStaff, 'gunner_human')]" min="-1" max="1" /></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon artificial"></i></th>
+								<td><em><small>Artificiel</small></em></td>
+								<td><input id="gunner_artificial" type="number" value="[r: json.get(zStaff, 'gunner_artificial')]" min="-1" max="1" /></td>
+							</tr>
+							<tr class="[r: if (group3 == 0, 'hidden', '')]" data-group="3">
+								<th><i class="icon supernatural"></i></th>
+								<td><em><small>Surnaturel</small></em></td>
+								<td><input id="gunner_supernatural" type="number" value="[r: json.get(zStaff, 'gunner_supernatural')]" min="-1" max="1" /></td>
+							</tr>
+						</table>
+
+					</div>
+
+					<div class="col-1o2 gutter">
+
+						<!-- SAILING -->
+						<div class="caption pad"><h4>Navigation</h4></div>
+						<div class="table-block">
+							<div class="range [r, if (json.get(zSailing, 'toggle_speed_maneuver_modifier') == 0): 'hidden']">
+								<input id="speed_maneuver_modifier" type="range" min="-5" max="5" value="[r: json.get(zSailing, 'speed_maneuver_modifier')]"><output>0</output>
+							</div>
+							<table id="sailing" class="table" style="width: 80%;" data-lock>
+								<colgroup><col width="50%"><col width="50%"></colgroup>
+								<tr>
+									<th class="ctrl-cell"><abbr title="Vitesse de man&oelig;uvre">VM</abbr><a id="toggle_speed_maneuver_modifier" href="javascript:void(0)" class="ctrl-icon right" title="Modificateur de circonstances"><i class="icon balance[r, if (json.get(zSailing, 'toggle_speed_maneuver_modifier') == 1): '-reverse']"></i></a></th>
+									<td class="cur-base">
+										<output id="speed_maneuver_val" class="cur">5</output>
+										<span>(</span>
+										<input id="speed_maneuver" class="base" type="number" value="[r: json.get(zSailing, 'speed_maneuver')]" min="1" max="[r: getConst('speed_maneuver_max')]" title="Vitesse de man&oelig;uvre de base" />
+										<span>)</span>
+									</td>
+								</tr>
+								<tr>
+									<th><dfn title="Vitesse par jour exprim&eacute;e en milles marins">Vitesse/jour</dfn></th>
+									<td><input id="speed_day" type="number" value="[r: json.get(zSailing, 'speed_day')]" min="0" max="[r: getConst('speed_day_max')]" /></td>
+								</tr>
+								<tr>
+									<th>Tirant d&rsquo;eau</th>
+									<td><input id="draught" type="number" value="[r: json.get(zSailing, 'draught')]" min="0" max="[r: getConst('draught_max')]" /></td>
+								</tr>
+							</table>
+							<table class="aside" style="width: 20%;">
+								<tr><td><a id="roll_maneuver" href="javascript:void(0)" class="button disabled" title="Test de man&oelig;uvre" tabindex="-1"><i class="icon med ship"></i></a></td></tr>
+								<tr><td><a id="roll_navigation" href="javascript:void(0)" class="button disabled" title="Test de navigation" tabindex="-1"><i class="icon med wheel"></i></a></td></tr>
+								<tr>&nbsp;</tr>
+							</table>
+						</div>
+
+						<!-- CANNONS -->
+						[h: cannons_max = getConst('cannons_max')]
+						[h: port1_cur = json.get(zCannons1, 'port1_cur')]
+						[h: star1_cur = json.get(zCannons1, 'star1_cur')]
+						[h: port2_cur = json.get(zCannons2, 'port2_cur')]
+						[h: star2_cur = json.get(zCannons2, 'star2_cur')]
+						[h: port1_max = json.get(zCannons1, 'port1_max')]
+						[h: star1_max = json.get(zCannons1, 'star1_max')]
+						[h: port2_max = json.get(zCannons2, 'port2_max')]
+						[h: star2_max = json.get(zCannons2, 'star2_max')]
+						<div class="caption pad">
+							<h4>Canonnade<span class="hidden"> &mdash; Canons</span></h4>
+							<div class="label" style="right: 24%;"><abbr title="Bonus &agrave; la marge de r&eacute;ussite">BMR</abbr></div>
+						</div>
+						<div class="table-block">
+							<table id="cannons1" class="table" style="width: 80%;" data-lock>
+								<colgroup><col width="50%"><col width="30%"><col width="20%"></colgroup>
+								<tr class="ctrl-row">
+									<th class="ctrl-cell">B&acirc;bord<a id="port1_clear" href="javascript:void(0)" class="ctrl-icon right" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+									<td class="val-max">
+										<input id="port1_pts" class="val" type="number" value="[r: json.get(zCannons1, 'port1_pts')]" min="0" max="[r: port1_cur]" title="Nombre de canons par&eacute;s &agrave; tirer" />
+										<span>/</span>
+										<input id="port1_cur" class="max" type="number" value="[r: port1_cur]" min="0" max="[r: port1_max]" title="Nombre de canons en &eacute;tat (max. [r: port1_max])" />
+									</td>
+									<td class="title" title=""><input id="port1_broadside" type="hidden"><output id="port1_msb">0</output></td>
+								</tr>
+								<tr class="ctrl-row">
+									<th class="ctrl-cell">Tribord<a id="star1_clear" href="javascript:void(0)" class="ctrl-icon right" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+									<td class="val-max">
+										<input id="star1_pts" class="val" type="number" value="[r: json.get(zCannons1, 'star1_pts')]" min="0" max="[r: star1_cur]" title="Nombre de canons par&eacute;s &agrave; tirer" />
+										<span>/</span>
+										<input id="star1_cur" class="max" type="number" value="[r: star1_cur]" min="0" max="[r: star1_max]" title="Nombre de canons en &eacute;tat (max. [r: star1_max])" />
+									</td>
+									<td class="title" title=""><input id="star1_broadside" type="hidden"><output id="star1_msb">0</output></td>
+								</tr>
+							</table>
+							<table class="aside" style="width: 20%;">
+								<tr><td><a id="roll_port1" class="button disabled" href="javascript:void(0)" title="Test de canonnade" tabindex="-1"><i class="icon med fire-port"></i></a></td></tr>
+								<tr><td><a id="roll_star1" class="button disabled" href="javascript:void(0)" title="Test de canonnade" tabindex="-1"><i class="icon med fire-star"></i></a></td></tr>
+							</table>
+						</div>
+						<div class="table-block[r: if (port2_max > 0 || star2_max > 0, '', ' hidden')]">
+							<table id="cannons2" class="table" style="width: 80%;" data-lock>
+								<colgroup><col width="50%"><col width="30%"><col width="20%"></colgroup>
+								<tr class="ctrl-row">
+									<th class="ctrl-cell">B&acirc;bord <small>(2<sup>e</sup> pont)</small><a id="port2_clear" href="javascript:void(0)" class="ctrl-icon right" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+									<td class="val-max">
+										<input id="port2_pts" class="val" type="number" value="[r: json.get(zCannons2, 'port2_pts')]" min="0" max="[r: port2_cur]" title="Nombre de canons par&eacute;s &agrave; tirer" />
+										<span>/</span>
+										<input id="port2_cur" class="max" type="number" value="[r: port2_cur]" min="0" max="[r: port2_max]" title="Nombre de canons en &eacute;tat (max. [r: port2_max])" />
+									</td>
+									<td class="title" title=""><input id="port2_broadside" type="hidden"><output id="port2_msb">0</output></td>
+								</tr>
+								<tr class="ctrl-row">
+									<th class="ctrl-cell">Tribord <small>(2<sup>e</sup> pont)</small><a id="star2_clear" href="javascript:void(0)" class="ctrl-icon right" title="Remettre les valeurs &agrave; z&eacute;ro"><i class="icon clear"></i></a></th>
+									<td class="val-max">
+										<input id="star2_pts" class="val" type="number" value="[r: json.get(zCannons2, 'star2_pts')]" min="0" max="[r: star2_cur]" title="Nombre de canons par&eacute;s &agrave; tirer" />
+										<span>/</span>
+										<input id="star2_cur" class="max" type="number" value="[r: star2_cur]" min="0" max="[r: star2_max]" title="Nombre de canons en &eacute;tat (max. [r: star2_max])" />
+									</td>
+									<td class="title" title=""><input id="star2_broadside" type="hidden"><output id="star2_msb">0</output></td>
+								</tr>
+							</table>
+							<table class="aside" style="width: 20%;">
+								<tr><td><a id="roll_port2" href="javascript:void(0)" class="button disabled" title="Test de canonnade" tabindex="-1"><i class="icon med fire-port"></i></a></td></tr>
+								<tr><td><a id="roll_star2" href="javascript:void(0)" class="button disabled" title="Test de canonnade" tabindex="-1"><i class="icon med fire-star"></i></a></td></tr>
+							</table>
+						</div>
+
+						<!-- INSET -->
+						<div class="inset">
+
+							<!-- CANNONBALLS -->
+							[h: cannonballs_max = getConst('cannonballs_max')]
+							[h: cannonballs_last = json.get(zCannonballs, 'last')]
+							[h: cannonballs_hollowed = json.get(zCannonballs, 'hollowed')]
+							[h: cannonballs_chained = json.get(zCannonballs, 'chained')]
+							[h: cannonballs_canister = json.get(zCannonballs, 'canister')]
+							[h: cannonballs_heated = json.get(zCannonballs, 'heated')]
+							<div class="caption pad hidden"><h4>Boulets</h4></div>
+							<div id="cannonballs" class="blk-row" data-lock>
+								<input type ="hidden" id="cannonballs_max" value="[r: cannonballs_max]">
+								<input type="radio" name="cannonballs" id="cannonballs_none" [r, if (cannonballs_last == "none"): "checked='checked'"] /><span></span>
+								<div>
+									<span><input id="cannonballs_hollowed" name="cannonballs" type="radio" value="hollowed" title="Charger des boulets creux" disabled="disabled" [r, if (cannonballs_last == "hollowed" && cannonballs_hollowed > 0): "checked='checked'"] /><label><i class="icon med hollowed"></i></label></span>
+									<span><input id="hollowed" type="number" value="[r: cannonballs_hollowed]" min="0" max="[r: cannonballs_max]" /></span>
+									<span>Creux</span>
+								</div>
+								<div>
+									<span><input id="cannonballs_chained" name="cannonballs" type="radio" value="chained" title="Charger des boulets ram&eacute;s" disabled="disabled" [r, if (cannonballs_last == "chained" && cannonballs_chained > 0): "checked='checked'"] /><label><i class="icon med chained"></i></label></span>
+									<span><input id="chained" type="number" value="[r: cannonballs_chained]" min="0" max="[r: cannonballs_max]" /></span>
+									<span>Ram&eacute;s</span>
+								</div>
+								<div>
+									<span><input id="cannonballs_canister" name="cannonballs" type="radio" value="canister" title="Charger des boulets &agrave; mitraille" disabled="disabled" [r, if (cannonballs_last == "canister" && cannonballs_canister > 0): "checked='checked'"] /><label><i class="icon med canister"></i></label></span>
+									<span><input id="canister" type="number" value="[r: cannonballs_canister]" min="0" max="[r: cannonballs_max]" /></span>
+									<span>Mitraille</span>
+								</div>
+								<div>
+									<span><input id="cannonballs_heated" name="cannonballs" type="radio" value="heated" title="Charger des boulets rouges" disabled="disabled" [r, if (cannonballs_last == "heated" && cannonballs_heated > 0): "checked='checked'"] /><label><i class="icon med heated"></i></label></span>
+									<span><input id="heated" type="number" value="[r: cannonballs_heated]" min="0" max="[r: cannonballs_max]" /></span>
+									<span>Rouges</span>
+								</div>
+							</div>
+
+							<!-- CANNONADE -->
+							[h: distance = json.get(zCannonade, 'distance')]
+							<div class="caption pad">
+								<h4 class="hidden">Canonnade</h4>
+							</div>
+							<div class="val-row">
+								<input class="first" type="radio" name="distance" value="null" [r, if (distance == "null"): "checked='checked'"] />
+								<em>Distance</em>
+								<input type="radio" name="distance" value="0" [r, if (distance == "0"): "checked='checked'"] /><label>0</label>
+								<input type="radio" name="distance" value="1" [r, if (distance == "1"): "checked='checked'"] /><label>1</label>
+								<input type="radio" name="distance" value="2" [r, if (distance == "2"): "checked='checked'"] /><label>2</label>
+								<input type="radio" name="distance" value="3" [r, if (distance == "3"): "checked='checked'"] /><label>3</label>
+								<input type="radio" name="distance" value="4" [r, if (distance == "4"): "checked='checked'"] /><label>4</label>
+								<input type="radio" name="distance" value="5" [r, if (distance == "5"): "checked='checked'"] /><label>5</label>
+								<input type="radio" name="distance" value="6" [r, if (distance == "6"): "checked='checked'"] /><label>6</label>
+								<input type="radio" name="distance" value="7" [r, if (distance == "7"): "checked='checked'"] /><label>7+</label>
+							</div>
+							[h: target = json.get(zCannonade, 'target')]
+							<div class="val-row dark">
+								<input class="first" type="radio" name="target" value="null" data-title="Aucune" [r, if (target == "null"): "checked='checked'"] />
+								<em>Cible</em>
+								<input type="radio" id="natural" name="target" value="natural" data-title="Nature" [r, if (target == "natural"): "checked='checked'"]>
+								<label for="natural"><i class="icon natural black"></i></label>
+								<input type="radio" id="human" name="target" value="human" data-title="Humain" [r, if (target == "human"): "checked='checked'"]>
+								<label for="human"><i class="icon human black"></i></label>
+								<input type="radio" id="artificial" name="target" value="artificial" data-title="Artificiel" [r, if (target == "artificial"): "checked='checked'"]>
+								<label for="artificial"><i class="icon artificial black"></i></label>
+								<input type="radio" id="supernatural" name="target" value="supernatural" data-title="Surnaturel" [r, if (target == "supernatural"): "checked='checked'"]>
+								<label for="supernatural"><i class="icon supernatural black"></i></label>
+								<output id="target_title">&nbsp;</output>
+							</div>
+							<div class="val-row">
+								<em>Difficult&eacute;</em>
+								<strong id="difficulty_str">0</strong>
+								<input id="difficulty" type="hidden" value="">
+								<em>Cadence</em>
+								<strong id="cannonade_rate" class="long">0</strong>
+							</div>
+
+						</div><!-- END INSET -->
+
+						<!-- REQUIREMENTS -->
+						<div class="requirement">
+							<div id="require_cannonball">Aucun boulet charg&eacute; (pas de munition)</div>
+							<div id="require_servant">Pas assez de servants (ou trop de canons)</div>
+							<div id="require_distance">Distance non d&eacute;finie (ou hors de port&eacute;e)</div>
+							<div id="require_target">Cible non d&eacute;finie</div>
+						</div>
+
+					</div>
+
+				</div><!-- END SHIP -->
+
+				<div id="shipment" class="section" data-section="2"><!-- SHIPMENT -->
+					<div class="col-1o1 gutter">
+						<div class="caption pad"><h4>Cargaison</h4></div>
+						<div class="table-block">
+							<table class="table">
+								<colgroup>
+									<col width="30px">
+									<col>
+									<col width="100px">
+									<col width="45px">
+									<col width="80px">
+									<col width="30px" data-hide>
+									<col width="30px" data-hide>
+								</colgroup>
+								<thead>
+									<tr>
+										<th>&nbsp;</th>
+										<th class="left pad">Nom</th>
+										<th>Type</th>
+										<th><abbr title="Quantit&eacute;">Qt&eacute;</abbr></th>
+										<th>Valeur</th>
+										<th colspan="2" data-hide></th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- BEGIN LOOP -->
+									[r, c(json.length(zInventory)), code: {
+										[h: item = json.get(zInventory, roll.count)]
+										[h: note = json.get(item, "note")]
+										[h: note = if (note != "", "<a href='javascript:void(0)' data-tooltip='" + replace(decode(json.get(item, "note")), "'", "&rsquo;") +"' title='Voir note'><i class='icon note'></i></a>", "&nbsp;")]
+										[r: "
+											<tr draggable='true'>
+												<td>" + note + "</td>
+												<td class='left pad'>" + decode(json.get(item, 'name')) + "</td>
+												<td>" + getItemType(json.get(item, 'type')) + "</td>
+												<td>" + json.get(item, 'quantity') + "</td>
+												<td>" + json.get(item, 'value') + "&nbsp;Ps</td>
+												<td data-hide><a href='" + macroLinkText("editItem@Lib:Dialogs", "none", roll.count) + "' title='Modifier'><i class='icon edit'></i></a></td>
+												<td data-hide><a href='" + macroLinkText("deleteItem@Lib:Dialogs", "none", roll.count) + "' title='Supprimer'><i class='icon delete'></i></a></td>
+											</tr>
+										"]
+									}]
+									<!-- END LOOP -->
+								</tbody>
+							</table>
+							<div class="caption footline" data-hide><a href="[r: macroLinkText('addItem@Lib:Dialogs', 'none')]"><i class="icon add"></i><span>Ajouter</span></a></div>
+						</div>
+					</div>
+				</div><!-- END SHIPMENT -->
+
+			</main><!-- END MAIN -->
+
+		<div><!-- END WRAP -->
+
+		<script>
+
+			[r: writeMainJavaScript()]
+			[r: writeSheetJavaScript()]
+			[r: writeShipJavaScript()]
+
+		</script>
+
+	</body>
+
+</html>
+}]

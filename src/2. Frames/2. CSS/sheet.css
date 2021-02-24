@@ -1,0 +1,565 @@
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                CAPITAINE VAUDOU SHEET CASCADING STYLE SHEET                */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/*     This Sheet MUST be linked AFTER Main.css and BEFORE all the others     */
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Containers */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.sheet {
+	background-color: rgb(208,200,176);
+	overflow-x: hidden;
+}
+.sheet .wrap {
+	display: inline-block;
+	position: relative;
+	background-color: rgb(255,255,252);
+	transition: opacity .375s;
+}
+.sheet.fx .wrap {
+	background-color: rgba(255,255,252,.5);
+	box-shadow: 0 0 20px 0 rgb(255,255,248);
+}
+.sheet .wrap:before,
+.sheet .wrap:after {
+	pointer-events: none;
+	position: absolute;
+	display: none;
+	content: '';
+	top: 0;
+	width: 0;
+	height: 100%;
+}
+.sheet .wrap:before {left: -20px;}
+.sheet .wrap:after {right: -20px;}
+.sheet.fx .wrap:before,
+.sheet.fx .wrap:after {
+	width: 14px;
+	background-color: transparent;
+	background-repeat: repeat-y;
+}
+
+/* Containers*/
+.sheet header,
+.sheet main {
+	margin: 0 auto;
+	max-width: 780px;
+	min-width: 400px;
+}
+.sheet main {
+	position: relative;
+	margin-bottom: 20px;
+	padding: 0 10px;
+	text-align: left;
+}
+.sheet main:before {
+	content: '';
+	position: absolute;
+	top: 38px;
+	top: 37px;
+	left: 10px;
+	width: calc(100% - 20px);
+	height: 40px;
+	border-top: 1px solid rgb(64,48,24);
+	background-image: linear-gradient(rgb(248,244,232), transparent);
+}
+
+/* Navigation */
+.sheet [id^='section'],
+.sheet [id^='section'] + label {
+	width: 25%;
+	height: 34px;
+	margin: 4px 0 0;
+	padding: 0;
+}
+.sheet [id^='section'] + label {
+	position: relative;
+	display: inline-block;
+	line-height: 36px;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	background: rgb(32,32,32);
+	color: rgba(255,255,255,.5);
+}
+.sheet.pc [id^='section'] + label {background: rgb(64,48,24)}
+.sheet.npc [id^='section'] + label {background: rgb(48,48,24);}
+.sheet [id^='section'] {
+	opacity: 0;
+	position: absolute;
+}
+.sheet [id^='section']:checked + label {
+	cursor: default;
+	color: black;
+	margin-bottom: -2px;
+	background: rgb(248,244,232);
+	border: 1px solid rgb(64,48,24);
+	border-bottom: 0;
+}
+.sheet [id^='section']:not(:checked):hover + label {
+	color: white;
+	background: rgba(64,48,24,.375);
+	text-shadow: 0 0 4px black;
+}
+.sheet [id^='section']:focus + label {
+	color: rgb(160,96,24);
+	background: rgba(255,240,64,.625);
+	border-bottom: 1px solid rgb(255,240,64);
+}
+
+/* Sections */
+.sheet .section {
+	display: none;
+	padding: 10px 0;
+	text-align: center;
+}
+.sheet #section1:checked ~ [data-section='1'],
+.sheet #section2:checked ~ [data-section='2'],
+.sheet #section3:checked ~ [data-section='3'] {display: block;}
+
+/* Headers */
+.sheet h4 {
+	margin: 15px 0 0;
+	height: 25px;
+	line-height: 25px;
+	text-align: left;
+}
+
+/* Headline */
+.sheet header {
+	background-repeat: no-repeat;
+	background-position: left -20px;
+}
+.sheet .headline {
+	position: relative;
+	width: calc(100% - 175px);
+	height: 225px;
+	padding-left: 25px;
+	text-align: left;
+}
+.sheet .headline + div {
+	width: 175px;
+}
+.sheet .headline > div {
+	display: inline-block;
+	text-align: center;
+}
+
+/* Buttons */
+.sheet .buttons input,
+.sheet .buttons input + span {
+	position: absolute;
+	left: 15px;
+	bottom: 10px;
+	width: 30px;
+	height: 30px;
+}
+.sheet .buttons input:nth-of-type(1),
+.sheet .buttons input:nth-of-type(1) + span {left: 15px;}
+.sheet .buttons input:nth-of-type(2),
+.sheet .buttons input:nth-of-type(2) + span {left: 45px;}
+.sheet .buttons input {
+	opacity: 0;
+	z-index: 1;
+}
+.sheet .buttons input + span {
+	border-radius: 3px;
+	opacity: .375;
+}
+.sheet .buttons input + span i {margin: 5px}
+.sheet .buttons input:hover + span,
+.sheet .buttons input:focus + span,
+.sheet .buttons input:checked + span {
+	opacity: 1;
+}
+.sheet .buttons input:hover + span,
+.sheet .buttons input:focus + span {
+	background-color: rgb(255,240,64);
+}
+.sheet .buttons input:checked:hover + span,
+.sheet .buttons input:checked:focus + span {
+	background-color: rgb(240,64,24);
+}
+
+/* Status */
+.sheet .status {
+	margin-top: 20px;
+	color: white
+}
+.sheet .status span {
+	display: inline-block;
+	margin-top: 10px;
+	padding: 0 5px;
+	font-size: 16px;
+	line-height: 25px;
+	text-shadow: 1px 1px 1px black;
+	background-color: rgba(0,0,0,.5);
+}
+.sheet .status div:nth-child(1) span + span {
+	padding-left: 10px;
+}
+.sheet .status div:nth-child(2) span + span:before {
+	content: '–';
+	margin-right: 10px;
+}
+.sheet .status code {color: rgb(248,248,160)}
+.sheet .status strong code {color: rgb(255,224,64);}
+.sheet .status [title]:hover {
+	background-color: rgba(255,224,64,.25);
+	border-bottom: 2px dotted rgb(255,224,64);
+}
+
+/* Portrait */
+.sheet .portrait {
+	position: relative;
+	height: 175px;
+}
+.sheet .portrait img {
+	width: 175px;
+	max-height: 175px;
+}
+.sheet .portrait a {
+	display: inline-block;
+	position: relative;
+}
+.sheet .portrait a img {
+	transition: opacity .125s;
+}
+.sheet .portrait a:before {
+	content: '';
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	left: 0;
+	width: 175px;
+	height: 175px;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	transition: opacity .375s;
+}
+.sheet .portrait:hover a:before {
+	opacity: 0;
+}
+.sheet .portrait a:after {
+	content: 'Modifier';
+	position: absolute;
+	display: none;
+	top: calc(50% - 15px);
+	left: 0;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+	color: white;
+	text-shadow: 1px 1px black;
+}
+.sheet .portrait a:focus {
+	background-color: rgba(255,240,64,.5);
+	box-shadow: 0 0 4px 2px rgba(255,224,48,.875);
+}
+.sheet .portrait a:hover:after,
+.sheet .portrait a:focus:after {display: block;}
+.sheet .portrait a:hover img,
+.sheet .portrait a:focus img {opacity: .5;}
+.sheet .portrait a:focus img {opacity: .25;}
+
+/* States */
+.sheet .states {
+	min-height: 50px;
+}
+.sheet .states figure {
+	display: none;
+	width: 55px;
+	margin: 0;
+	vertical-align: top;
+}
+.sheet .states figure + figure {
+	margin-left: 5px;
+}
+.sheet .states figure i {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+
+/* Storyline */
+.sheet .storyline {
+	text-align: left;
+}
+.sheet .storyline textarea {
+	resize: none;
+	width: calc(100% - 35px);
+	height: 100px;
+	margin: 0 10px 10px;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-family: serif;
+	line-height: 16px;
+	border: 0;
+	background-color: rgba(255,255,255,.375);
+	box-shadow: 0 0 4px 2px rgba(255,255,255,.375);
+	transition: background-color .375s, box-shadow .25s;
+}
+.sheet .storyline textarea:focus {
+	outline: 0;
+	background-color: rgba(255,255,255,.75);
+	box-shadow: 0 0 8px 4px rgba(255,255,255,.75);
+}
+
+/* Control Rows */
+.sheet .ctrl-row {}
+.sheet .ctrl-cell {position: relative;}
+.sheet .ctrl-icon {
+	position: absolute;
+	top: 5px;
+	width: 20px;
+	padding: 0;
+	z-index: 1;
+}
+.sheet .ctrl-icon.left {left: 5px;}
+.sheet .ctrl-icon.right {right: 5px;}
+.sheet .ctrl-icon i {
+	margin: 0;
+	opacity: .5;
+}
+.sheet .ctrl-icon:hover i,
+.sheet .ctrl-icon:focus i {opacity: 1;}
+.sheet .ctrl-icon:focus {background-color: transparent;}
+
+/* Group Cells */
+.sheet [data-group] th:before {
+	content: '\2022\00A0\2022\00A0\2022';
+	float: left;
+	width: 20px;
+	height: 5px;
+	line-height: 0;
+	margin-top: 8px;
+	margin-right: -25px;
+	transform: rotate(90deg);
+	opacity: .5;
+}
+.sheet [data-group] th .icon {
+	margin-top: 0;
+}
+
+/* Inset Boxes */
+.sheet .inset {
+	width: 300px;
+	margin-top: 10px;
+	padding: 8px;
+	border: 1px solid rgba(64,48,24,.625);
+	border-radius: 3px;
+	background-color: rgba(255,255,255,.5);
+}
+
+/* Value Rows */
+.sheet .val-row {
+	position: relative;
+	margin-top: 8px;
+	text-align: left;
+}
+.sheet .val-row em,
+.sheet .val-row strong,
+.sheet .val-row input,
+.sheet .val-row label,
+.sheet .val-row output,
+.sheet .val-row span {
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 12px;
+}
+.sheet .val-row em,
+.sheet .val-row strong {
+	width: 64px;
+}
+.sheet .val-row em {
+	font-style: normal;
+	color: rgb(64,48,24);
+}
+.sheet .val-row strong {
+	text-align: left;
+	color: rgb(32,32,32);
+}
+.sheet.pc .val-row strong {color: rgb(112,24,24);}
+.sheet.npc .val-row strong {color: rgb(24,64,64);}
+.sheet .val-row strong.long {width: auto;}
+.sheet .val-row input,
+.sheet .val-row label {
+	width: 24px;
+}
+.sheet .val-row output {
+	width: 88px;
+	padding: 0 8px;
+	text-align: left;
+}
+.sheet .val-row input {
+	margin: 0;
+	opacity: 0;
+}
+.sheet .val-row label {
+	margin-left: -24px;
+	background-color: white;
+	border: 1px solid rgb(176,176,160);
+}
+.sheet .val-row label ~ label {
+	border-left-width: 0;
+}
+.sheet .val-row input:checked + label {
+	color: white;
+	font-weight: bold;
+	outline-offset: -2px;
+	outline: 2px solid rgb(32,32,32);
+	background-color: rgb(32,32,32);
+}
+.sheet.pc .val-row input:checked + label {
+	outline-color: rgb(112,24,24);
+	background-color: rgb(112,24,24);
+}
+.sheet.npc .val-row input:checked + label {
+	outline-color: rgb(24,64,64);
+	background-color: rgb(24,64,64);
+}
+.sheet .val-row input:focus + label,
+.sheet.pc .val-row input:focus + label,
+.sheet.npc .val-row input:focus + label {
+	color: initial;
+	background-color: rgba(255,240,64,.5);
+}
+.sheet .val-row input:hover:not(:checked) + label {
+	color: initial;
+	background-color: rgb(255,240,64);
+}
+.sheet .val-row .first {width: 64px;}
+.sheet .val-row .first + em {
+	margin-left: -64px;
+	line-height: 22px;
+	border: 2px solid transparent;
+	box-sizing: border-box;
+}
+.sheet .val-row .first:checked + em {
+	font-weight: bold;
+	color: white;
+	background-color: rgb(32,32,32);
+}
+.sheet.pc .val-row .first:checked + em {background-color: rgb(112,24,24);}
+.sheet.npc .val-row .first:checked + em {background-color: rgb(24,64,64);}
+.sheet .val-row .first:hover:not(:focus) + em {
+	outline-offset: -1px;
+	outline: 1px solid rgb(176,176,160);
+}
+.sheet .val-row .first:hover + em,
+.sheet .val-row .first:focus + em {
+	background-color: rgb(255,240,64);
+}
+.sheet.pc .val-row .first:hover + em,
+.sheet.pc .val-row .first:focus + em {color: rgb(112,24,24);}
+.sheet.npc .val-row .first:hover + em,
+.sheet.npc .val-row .first:focus + em {color: rgb(24,64,64);}
+.sheet .val-row .first:checked:hover + em,
+.sheet .val-row .first:checked:focus + em {
+	color: rgb(32,32,32);
+	border-color: rgb(32,32,32);
+	background-color: rgb(255,240,64);
+}
+.sheet.pc .val-row .first:checked:hover + em,
+.sheet.pc .val-row .first:checked:focus + em {color: rgb(112,24,24); border-color: rgb(112,24,24);}
+.sheet.npc .val-row .first:checked:hover + em,
+.sheet.npc .val-row .first:checked:focus + em {color: rgb(24,64,64); border-color: rgb(24,64,64);}
+.sheet .val-row.dark input:checked:not(:focus) + label .icon {
+	background-position-y: -20px;
+}
+
+/* Block Rows  */
+.sheet .blk-row {
+	position: relative;
+	margin-top: 8px;
+	text-align: left;
+}
+.sheet .blk-row input[type='number'] {
+	width: 40px;
+	height: 24px;
+	margin: 4px 0;
+}
+.sheet .blk-row input[readonly],
+.sheet .blk-row input[readonly]:hover,
+.sheet .blk-row input[readonly]:focus {
+	background-color: white;
+}
+.sheet .blk-row > div {
+	display: inline-block;
+	font-size: 12px;
+}
+.sheet .blk-row > div > span {
+	display: block;
+	text-align: center;
+	width: 70px;
+}
+.sheet .blk-row > div > span:last-child {
+	height: 16px;
+	line-height: 16px;
+	color: rgb(64,48,24);
+}
+
+/* Requirements */
+.sheet .requirement {
+	margin-top: 6px;
+	padding-left: 20px;
+	text-align: left;
+	font-size: 10px;
+	font-style: italic;
+	line-height: 16px;
+}
+
+/* Drag and Drop */
+.sheet .table [draggable] > td {
+	height: 32px;
+}
+.sheet .table .dropable > td {
+	height: 30px;
+	border-top: 4px solid rgb(240,24,48);
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Responsive Design */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+@media screen and (min-width: 840px) {
+	.sheet .wrap:before,
+	.sheet .wrap:after {
+		display: inherit;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.sheet {overflow-x: visible;}
+	.sheet .wrap:before,
+	.sheet .wrap:after {display: none;}
+}
+
+@media screen and (max-width: 640px) {
+	.sheet .col-1o2 {width: 100%}
+	.sheet .status div:nth-child(1) span + span {padding-left: 5px;}
+	.sheet .status span {
+		margin-top: 0;
+		display: block;
+		font-size: 14px;
+		line-height: 25px;
+	}
+	.sheet [id^='section'],
+	.sheet [id^='section'] + label {width: 33.33333333333333333333%;}
+}

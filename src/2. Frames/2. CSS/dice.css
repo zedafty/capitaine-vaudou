@@ -1,0 +1,323 @@
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                   CAPITAINE VAUDOU CASCADING STYLE SHEET                   */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/*        This Sheet MUST be linked AFTER Main.css and BEFORE Subs.css        */
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Dice Roller */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.diceroller {
+	position: relative;
+	float: left;
+	width: 132px;
+	margin: 40px 0 20px;
+}
+.diceroller.right {
+	float: right;
+}
+.diceroller,
+.diceroller .pane {
+	padding: 10px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	background-color: rgba(64,48,24,.625);
+}
+.diceroller .pane {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: calc(100% + 10px);
+	width: 160px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.diceroller.right .pane {
+	left: auto;
+	right: calc(100% + 10px);
+	border-radius: 8px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.diceroller.unfold .pane {
+	display: inline-block;
+}
+.diceroller.top,
+.diceroller.top .pane {
+	margin: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+/* Control Bar */
+.diceroller .bar {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: calc(100% + 5px);
+}
+.diceroller.unfold .bar {
+	left: calc(100% + 160px + 15px);
+}
+.diceroller.right .bar .icon {
+	transform: rotate(180deg);
+}
+.diceroller.right .bar {
+	left: auto;
+	right: calc(100% + 5px);
+}
+.diceroller.right.unfold .bar {
+	right: calc(100% + 160px + 15px);
+}
+.diceroller .bar a {
+	display: inline-block;
+	border-radius: 3px;
+	opacity: .5;
+}
+.diceroller .bar a:hover,
+.diceroller .bar a:focus {
+	opacity: 1;
+	background-color: rgb(255,240,64);
+}
+.diceroller .bar a:active {
+	background-color: rgb(240,64,24);
+}
+.diceroller .bar a + a {
+	margin-top: 5px;
+}
+
+/* Rows */
+.diceroller .row {
+	position: relative;
+	text-align: left;
+}
+.diceroller .row.pad {padding-left: 28px;}
+
+/* Headers */
+.diceroller h4 {
+	line-height: 20px;
+	font-size: 12px;
+	font-variant: small-caps;
+	text-transform: lowercase;
+	color: white;
+	background-color: rgb(32,32,32);
+	white-space: nowrap;
+}
+.pc .diceroller h4 {background-color: rgb(112,24,24);}
+.npc .diceroller h4 {background-color: rgb(24,64,64);}
+.diceroller form > div:first-of-type > h4:first-of-type,
+.diceroller .pane > div:first-of-type > h4:first-of-type {
+	margin-top: 0;
+}
+
+/* Radios */
+.diceroller i.round {
+	border-radius: 100%;
+	border: 2px solid rgb(32, 32, 32);
+	background-color: rgb(32, 32, 32);
+}
+.diceroller i.round.active {
+	border-color: rgb(112, 24, 24);
+	background-color: rgb(112, 24, 24);
+}
+.diceroller i.round:hover {
+	cursor: pointer;
+	box-shadow: 0 0 2px 2px rgba(255,240,64,.875);
+}
+.diceroller i,
+.diceroller label,
+.diceroller input {
+	margin: 2px;
+}
+.diceroller label,
+.diceroller input[type='radio'] {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+}
+.diceroller input[type='radio'] {
+	position: absolute;
+	margin: 2px;
+	opacity: 0;
+}
+.diceroller label {
+	display: inline-block;
+	line-height: 24px;
+	font-size: 14px;
+	text-align: center;
+	color: rgba(255,255,255,.75);
+	border-radius: 2px;
+	background-color: rgb(32,32,32);
+}
+.diceroller abbr {
+	font-size: 10px;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-transform: uppercase;
+}
+.diceroller input:not([disabled]):hover + label,
+.diceroller input[type="radio"]:checked + label:not(.reset) {
+	color: white;
+	outline-offset: 0;
+	outline: 1px solid rgba(255,255,255,.875);
+}
+.diceroller input[type="radio"]:checked + label {
+	background-color: rgb(112, 24, 24);
+}
+.npc .diceroller input[type="radio"]:checked + label {
+	background-color: rgb(24, 64, 64);
+}
+.diceroller input[type='radio']:focus + label {
+	outline-offset: -1px !important;
+	outline: 2px solid rgba(255,240,128,.9375) !important;
+	box-shadow: 0 0 6px 4px rgba(255,232,64,.5);
+}
+.diceroller input[disabled] + label,
+.diceroller input[disabled]:hover + label {
+	cursor: default;
+	color: rgba(255,255,255,.75);
+	background-color: rgba(32,32,32,.5);
+	opacity: .5;
+}
+.diceroller input[disabled].spent + label {
+	color: white;
+	background-color: rgb(192,32,64);
+	opacity: .625;
+}
+.diceroller input[disabled].spent:checked + label {
+	background-color: rgb(240,32,64);
+	opacity: .875;
+}
+.diceroller label.global {
+	cursor: default;
+	color: white;
+	background-color: rgb(24,64,64);
+}
+
+/* Radio Max Levels */
+.diceroller [data-max='0'] input,
+.diceroller [data-max='0'] label,
+.diceroller [data-max='1'] [id$='2'],
+.diceroller [data-max='1'] [for$='2'],
+.diceroller [data-max='1'] [id$='3'],
+.diceroller [data-max='1'] [for$='3'],
+.diceroller [data-max='1'] [id$='4'],
+.diceroller [data-max='1'] [for$='4'],
+.diceroller [data-max='2'] [id$='3'],
+.diceroller [data-max='2'] [for$='3'],
+.diceroller [data-max='2'] [id$='4'],
+.diceroller [data-max='2'] [for$='4'],
+.diceroller [data-max='3'] [id$='4'],
+.diceroller [data-max='3'] [for$='4'] {
+	display: none;
+}
+
+/* Radio Spent Levels */
+.diceroller [data-spent='4'] input,
+.diceroller [data-spent='4'] label,
+.diceroller [data-spent='3'] [id$='0'],
+.diceroller [data-spent='3'] [for$='0'],
+.diceroller [data-spent='3'] [id$='1'],
+.diceroller [data-spent='3'] [for$='1'],
+.diceroller [data-spent='3'] [id$='2'],
+.diceroller [data-spent='3'] [for$='2'],
+.diceroller [data-spent='3'] [id$='3'],
+.diceroller [data-spent='3'] [for$='3'],
+.diceroller [data-spent='2'] [id$='0'],
+.diceroller [data-spent='2'] [for$='0'],
+.diceroller [data-spent='2'] [id$='1'],
+.diceroller [data-spent='2'] [for$='1'],
+.diceroller [data-spent='2'] [id$='2'],
+.diceroller [data-spent='2'] [for$='2'],
+.diceroller [data-spent='1'] [id$='0'],
+.diceroller [data-spent='1'] [for$='0'],
+.diceroller [data-spent='1'] [id$='1'],
+.diceroller [data-spent='1'] [for$='1'] {
+	display: inline-block;
+}
+
+/* Selects */
+.diceroller select {
+	margin-top: 5px;
+	font-size: 11px;
+	border: 0;
+	background-color: rgb(240,236,224);
+}
+
+/* Ranges */
+.diceroller input[type='range'],
+.diceroller input[type='range'] + output {
+	height: 20px;
+}
+.diceroller input[type='range'] {
+	width: 90px;
+	margin: 0;
+}
+.diceroller input[type='range'] + output {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-left: 2px;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	background-color: rgb(240,236,224);
+}
+
+/* Buttons */
+.diceroller button {margin: 10px 0 0;}
+.diceroller button + button {margin-left: 10px;}
+.diceroller button.cancel {width: 30px;}
+.diceroller button.confirm {width: 70px;}
+
+/* Flush */
+.diceroller #pools {
+	position: relative;
+}
+.diceroller #flush {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 6px;
+}
+.diceroller #flush i {
+	margin: 0;
+	opacity: .5;
+}
+.diceroller #flush:hover i,
+.diceroller #flush:focus i {
+	opacity: 1;
+}
+.diceroller #mp:not([data-spent='0']) ~ #flush,
+.diceroller #hp:not([data-spent='0']) ~ #flush {
+	display: inline-block;
+}
+
+/* Counters */
+.diceroller .counter > div {
+	font-size: 10px;
+	margin-top: 4px;
+	padding: 0 8px 0 4px;
+}
+.diceroller .counter > div code {color: white;}
+.diceroller .counter > div span:nth-child(2) {
+	float: right;
+	color: rgba(255,255,255,.5);
+}
+
+/* Requirements */
+.diceroller .requirement > div {
+	font-size: 10px;
+	margin-top: 6px;
+	text-align: center;
+}

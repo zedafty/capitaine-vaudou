@@ -1,0 +1,57 @@
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                   CAPITAINE VAUDOU CASCADING STYLE SHEET                   */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/*            Subsidiary Sheet MUST be linked AFTER all the others            */
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Commons */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/* Visibility */
+.hidden {display: none !important;}
+
+/* Float */
+.clearfix:after {
+	content: '';
+	clear: both;
+	width: 100%;
+	height: 5px;
+}
+.float-left {float: left;}
+.float-right {float: right;}
+
+/* Alignment */
+.left {text-align: left;}
+.right {text-align: right;}
+.center {text-align: center;}
+
+/* Fonting */
+.valid, .wrong, .bonus, .malus {font-weight: bold;}
+input.valid, input.bonus, .valid, .bonus {color: rgb(48,128,48);}
+input.wrong, input.malus, .wrong, .malus {color: rgb(160,48,48)}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Inputs */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+input.error,
+input[type='number']:invalid {
+	color: darkblue;
+	background-color: rgb(255,224,224);
+}
+
+input.error,
+input.error:focus,
+input[type='number']:invalid{
+	outline: 2px solid rgba(255,48,24,.9375) !important;
+	box-shadow: 0 0 6px 4px rgba(255,48,24,.25) inset;
+}

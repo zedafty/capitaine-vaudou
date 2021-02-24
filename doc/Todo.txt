@@ -1,0 +1,103 @@
+================================================================================
+--------------------------------------------------------------------------------
+# Capitaine Vaudou MapTool Framework : Todo
+--------------------------------------------------------------------------------
+================================================================================
+
+# Mémo
+	Penser à passer les librairies sur la couche du MJ ou des objets pour plus de sûreté
+
+================================================================================
+--------------------------------------------------------------------------------
+# TODO
+--------------------------------------------------------------------------------
+================================================================================
+
+# Compte-tours
+! Ajouter un Compte-tours pour le MJ
+
+================================================================================
+--------------------------------------------------------------------------------
+# BUGS
+--------------------------------------------------------------------------------
+================================================================================
+
+# Character Sheet
+* When click on close window in MapTool toolbar the overlay isn't updated
+	> KNOWN BUG : no event for checking the window closing this way ; NO FIX
+
+# Ship Sheet
+! The ship sheet is automatically closen when the map is changed, making it impossible to change staff members
+	> KNOWN BUG : all inputs except staff links should be disabled instead of closing the sheet ; TO FIX
+
+# Dice Roller
+! The setTimeout JavaScript function freezes the overlay between dice roll
+	> KNOWN BUG : no asynchronous feature for now (no AJAX, no Worker) ; NO FIX FOR NOW
+
+================================================================================
+--------------------------------------------------------------------------------
+# ENHANCEMENTS
+--------------------------------------------------------------------------------
+================================================================================
+
+# Character Sheet
+* Add wounds localization
+	K: NO NEED for now.
+
+# Character Creation Features
+	À la création du personnage, le joueur choisit cinq Talents de pirate parmi ceux soulignés et les passe à +1.
+	Puis il choisit un autre Talent, de pirate ou pas, qu’il passe aussi à +1.
+	Et enfin, quatre Talents (pirates ou non) qu’il met à 0.
+	Il y a donc des talents des colonnes X, -4 et -2 dont on peut se servir à +0... 
+
+================================================================================
+--------------------------------------------------------------------------------
+# IDEAS
+--------------------------------------------------------------------------------
+================================================================================
+
+# Fiches
+! Largeur des tableaux fixe (320 px)
+
+# Fiche de personnage
+? Forcer l'incrément des Talents aux seules valeurs permises (p.ex. passer de -4 à -2 sans passer par -3)
+? Simple widget for GM/Player to set not script-handled states (i.e. unconscious and cursed)
+
+# Lanceur de dés
+! Visual feedback when last pool point is about to be used (e.g. when the last hp point will kill the character)
+
+# Barre d'outils
+? Remplacer l'icône 'Pion' par une icône'Loupe'
+
+================================================================================
+--------------------------------------------------------------------------------
+# Notes de développement
+--------------------------------------------------------------------------------
+================================================================================
+
+# V. Screenshot
+	PV => action unique ; désactiver (max. 2 pour wanga majeur)
+	Max dépense d'un point de 3 par point et possibilité de 2+2 ou de 3+1
+
+# Ship
+	VM {MS} = Vitesse de manoeuvre {Maneuver Speed}
+	BMR {MSB} = Bonus de Marge de Réussite {Margin Success Bonus}
+	Bordée {}
+
+# Points de coque / voile
+	Malus de 0, -2 et -4 tous les (max / 3) SAUF Corvette (32 pts max) => tier1 = 15, tier2 = 10, tier3 = 15
+	Possibilité d'inclure le malus auto à la VM, mais pas à la navigation
+	SI moins de 90% pts de coque, le navire devient une épave
+	SI 0 pt de coque, le navire coule
+
+# Canons
+	BMR +1 tous les 3 canons SAUF Marchand => 4 canons, pas de BMR
+	Bordée : 1 2 3 4 4 5 5 6 6 7
+	ATTENTION : Frégate => Deux ponts, faire un test de canonnade séparément
+	NOTE : Petit Garde-côte => 2x4 canons au lieu de 2x8
+
+# Commandement
+	captain : roll_maneuver   => VM + (Action + Navigation + Artificiel) + Modificateurs de circonstance
+	skipper : roll_navigation => Esprit + (Action + Navigation + Artificiel)
+	gunner  : cannonade_test  => Bordée + (Perception + Artillerie) + <Cible> + Difficulté (dépend de la distance)
+	NOTE    : if skipper or gunner is undefined, then captain used

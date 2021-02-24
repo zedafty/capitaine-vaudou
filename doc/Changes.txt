@@ -1,0 +1,294 @@
+================================================================================
+--------------------------------------------------------------------------------
+# Capitaine Vaudou MapTool Framework : Changes
+--------------------------------------------------------------------------------
+================================================================================
+
+	24/02/2021 : Bêta 1.0
+	16/01/2021 : Alpha 3.3
+	14/12/2020 : Alpha 3.2
+	09/12/2020 : Alpha 3.1
+	28/11/2020 : Alpha 3.0
+	23/11/2020 : Alpha 2.3
+	21/11/2020 : Alpha 2.2
+	20/11/2020 : Alpha 2.1
+	20/11/2020 : Alpha 2.0
+	17/11/2020 : Alpha 1
+	14/11/2020 : Draft
+
+================================================================================
+--------------------------------------------------------------------------------
+# Latest : Bêta 1.0
+--------------------------------------------------------------------------------
+================================================================================
+
+TODO : Permettre la réorganisation de l'inventaire sur la dernière ligne
+TODO : Voir pour créer une icône d'activation des EP + des icônes des états (héroïsme + 3 énergies de base)
+TODO : Voir pour renverser la logique de la consommation des énergies
+IDEA : Check change over character sheet by putting event onMouseEnter() followed by a simple that checks if the player has an assigned token
+! max pour l'inventaire des personnages => pas de limite
+! max pour l'inventaire des navires => pas de limite
+
+# Campagne
+° Mettre à jour les propriétés de campagne (navire uniquement)
+° Ajouter la prise en charge des touches de contrôle pour les champs numériques (Shift et Ctrl)
+° Harmoniser les schémas de couleurs (PJ = marron/rouge ; PNJ = vert-gris/turquoise)
+° Réorganiser les icônes (changement position et amélioration des vecteurs de base)
+° Ajouter un historique pour les personnages et les bateaux (sous l'en-tête)
+° Ajouter un widget pour la météo (température, vent et ciel)
+
+# Fiche de personnage
+° Définir un minimum de 3 pour les Composantes et de 1 pour les Moyens
+
+# Fiche de navire
+° Ajouter des menus déroulants pour les valeurs des maîtres d'équipage
+° Ajouter des boutons avec icône pour les boulets de canons (creux, ramés, mitraille et rouges)
+° Ajouter des boutons avec icône pour les jets de dés (tests de navigation, manoeuvre et canonnade)
+° Ajouter la prise en charge de la distance pour les jets de canonnade
+° Ajouter l'affichage de la cadence de tir pour les jets de canonnade
+° Ajouter des indicateurs de conditions de canonnade impossible
+° Changer le nombre maximal de boulets à bord (60 boulets par canon au total)
+° Ajouter le bonus à la marge de réussite pour les canonnades
+° Ajouter les dégâts principaux et de jumelage pour les cannonades
+° Ajouter la cible pour les tests de canonnade
+° Ajouter un modificateur de circonstances pour les tests de manoeuvre
+
+# Lanceur de dés
+° Limiter le nombre de cible à seulement une (liste de choix plutôt que cases à cocher)
+° Ajouter des astuces au survol des éléments (dans le titre de section) plutôt que des infobulles
+° Ajouter le choix d'une combinaison en cliquant individuellement sur les composants et les moyens
+° Ajouter +1 au Seuil pour chaque Potentiel de base activé (Puissance, Eapidité et Précision)
+° Afficher le nombre de points dépensés dans chaque Potentiel lors d'un jet de dés (sous l'icône)
+
+# Bugs
+° Corriger la formulation erronée de cadence de tir (3 tirs par tour => tous les 3 tours)
+° Corriger la sortie du résultat de jet de dés dans la fenêtre de discussion (console.log)
+° Corriger l'affichage des informations de licence (chaque nouveau joueur connecté uniquement)
+° Corriger l'erreur d'interprétation du résultat de jet de dés (réussite si jet égal au seuil)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Changes : Alpha 3.3
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Modifier le jeu de propriétés 'Basic' (par défaut les pions sont des objets sans propriété)
+° Modifier les propriétés de personnage et de navire (changement de casse et de noms)
+° Réorganiser les librairies (renommage, ordonnancement, création et suppression)
+° Améliorer la prise en charge des caractères spéciaux des champs de saisie
+° Ajouter des constantes globales (librairie Lib:Global macro getConst)
+° Ajouter des erreurs globales (librairie Lib:Global macro getError)
+° Ajouter des macros de gestion des pions (fenêtre MJ dans MapTool)
+° Ajouter la prise en charge des pions de joueur (i.e. propriétés globalement accessibles)
+
+# Barre d'outils
+° Renommer la surcouche 'Overlay' en 'Toolbar'
+° Ajouter la possibilité de placer la barre d'outils en bas au centre
+
+# Fiche de personnage
+° Remplacer fonctions de chaque propriété de pions par une fonction générique
+° Remplacer fonction getName() par getCharName() (i.e. nom de personnage plutôt que nom de pion)
+° Renommer état 'Fou' (insane) en 'Crise de nerfs'  (nervous_breakdown)
+° Ajouter Talent X Astronomie (tests de Navigation nocturne)
+
+# Fiche de navire
+° Ajouter la fiche de navire
+° Changer la méthode de gestion de l'équipage (seul le nombre total de membres actuels est saisi)
+° Inverser les valeurs de navir de la Frégate et du Galion (erreur suspectée dans les règles)
+° Permuter la valeur d'équipage maximale du navire Marchand de 45 à 80 (erreur suspectée dans les règles)
+° Supprimer l'absence de BMR pour les canons du navire Marchand (incohérence dans les régles)
+° Supprimer l'inégalité du malus à la VM de la Corvette (incohérence dans les régles)
+° Ajouter un bloc pour les maîtres d'équipage afin d'affecter leurs valeurs au navire
+° Ajouter une classe de navire 'Hors-classe' pour les valeurs personnalisées
+° Ajouter des états de pions pour chaque pavillon de navire
+
+# Lanceur de dés
+° Corriger les icônes manquantes pour les PNJ
+° Corriger les icônes manquantes pour la Magie noire et la Magie blanche
+
+# Bugs
+° Corriger le bug de prise en charge des apostrophes dans les notes d'inventaire
+° Corriger le bug d'activation des icônes sur la barre d'outils (Fiche de personnage et Lanceur de dés)
+° Corriger le bug de la prise en charge des valeurs alphabétiques sur la Bourse (renvoie 0)
+
+# Améliorations
+° Remplacer les 0 par des tirets cadradins dans les champs de texte des fenêtres modales
+° Supprimer les bouton Réserves/Points et les boutons Ajouter Équipement/Cargaison des en-têtes
+° Sortir le bouton Ajouter Équipement/Cargaison du tableau d'inventaire et ajouter l'icône '+'
+° Remplacer l'infobulle temporisée des notes d'inventaires par une infobulle statique activée au clic
+° Assombrir les intitulés de rubrique et changer la couleur turquoise pour du marron foncé
+° Remplacer le style et la taille des valeurs maximales par le style et la taille des valeurs actuelles
+° Supprimer les infobulles de l'unité Pièces de huit (Ps) et de l'en-tête des fiches
+° Ajouter une marge entre les tableaux de compétences et mettre en conformité la mise en page adaptative
+° Remplacer les astéristiques et les soulignés dans les compétences par des icônes (sabres croisés et une icône note)
+° Masquer les fonctions d'édition de l'inventaire lors du verrouillage en lecture seule des fiches
+
+================================================================================
+--------------------------------------------------------------------------------
+# Changes : Alpha 3.2
+--------------------------------------------------------------------------------
+================================================================================
+
+# Overlay
+° Ajouter une surcouche principale ('Overlay')
+° Ajouter des boutons sur la surcouche principale pour permuter la Fiche de Personnage et le Lanceur dés
+° Ajouter des boutons sur la surcouche principale pour ouvrir les boîtes de dialogue Bourse et Réserves
+° Ajouter l'affichage des aides de jeu dans la surcouche principale (cliquer sur une aide de jeu préfixée 'Image:')
+
+# Fiche de personnage
+° Supprimer les boutons du Lanceur de dés et de la Permutation du lanceur de dés
+° Corriger l'indexation erronée de la liste des Aptitudes lors de la suppression
+° Corriger la saisie de caractère alphabétiques dans la Bourse
+° Limiter les champs de saisie de l'état civil à 16 caractères
+° Supprimer l'icône de la compétence 'Pratiques vaudoues'
+
+# Lanceur de dés
+° Corriger bug de réutilisation de points dépensés si aucun potentiel de Vaudou
+° Supprimer les infobulles dans le journal de discussion pour le résultat de jet de dés
+° Ajouter une icône pour les valeurs globales des PNJ dans le résultat de jet de dés
+° Traduire et compléter les bonus d'énergies pour les jets de dés
+° Ajouter options d'énergie Rapidité
+° Assombrir fond des boîtes translucides
+
+# Bugs
+° Corriger erreur de frappe liste des Compétences ('cold_weapon')
+° Corriger erreur de frappe état de folie ('fou/'folle')
+° Corriger forme plurielle perte de plusieurs points de vie
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 3.1
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Réorganiser les librairies (hiérarchie, noms et appels de macros)
+° Externaliser le code JavaScript (càd. macros séparées de la frame HTML)
+° Mettre à jour les propriétés de la campagne (ajout de DiceRollerPane, hp_spent et mp_spent)
+° Séparer le code CSS en trois (comme pour le JS => Main, Char and Dice)
+
+# Fiche de personnage
+° Remplacer l'ouverture de la fiche par une commutation via le bouton (i.e. comme le Lanceur de dés)
+° Ajouter un compte à rebours et un effet de fondu pour la mise en cache du contenu
+° Corriger la valeur maximale des Réserves (descendre le maximum réduit la valeur actuelle)
+° Forcer les valeurs numériques des champs de saisie au minimum ou au maximum si définies hors limite par l'utilisateur
+° Forcer la valeur des champs de saisie à nul si le contenu de texte est effacé
+° Définir les valeurs des Talents X, -4 et -2 respectivement à -4, -4 et -2
+° Ajouter le genre sur l'état civil des personnages
+
+# Lanceur de dés
+° Corriger la mise à jour automatique de l'overlay (i.e. rafraîchissement lors du changement de token et de propriété)
+° Séparer la boîte de dialogue en deux parties (paramètres de base et réserves/énergies/potentiels)
+° Ajouter des évènements utilisateur côté client pour la dépense des points de réserve
+° Ajouter les procédures de calcul du jet de dés et de renvoi d'un résultat (sous forme d'objet JS)
+° Désactiver les Talents X à valeur nulle (empêche le résultat de dé 'Échec automatique: Vous ne pouvez pas vous servir de ce Talent')
+~ Ajouter la sortie du résultat de jet de dés dans le journal de discussion
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 3.0
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Angliciser les noms de propriétés et changer la convention de nommage
+° Mettre à jour les propriétés des pions dans les propriétés de campagne (Basic, Ship, None)
+° Supprimer les macros inutilisées
+
+# Fiche de personnage
+° Forcer les nombres entiers dans la Bourse et fermeture de la boîte à la soumission
+° Ajouter bouton et script pour verrouiller les champs de saisie en lecture seule
+° Définir la valeur maximale des Points d'aventure à 200
+° Ajouter une propriété 'sephiroth' (i.e. Ange gardien, Démon, Djinn, Golem et Loa)
+° Ajouter boutons Mettre à jour les Réserves et Ajouter un Équipement
+° Ajouter la vérification d'état lors du changement de valeur d'une Réserve (sauf Points d'Aventure)
+° Modification des Aptitudes (pas de valeur ; ajout et suppression via un widget de type 'tag' [i.e. ajout et et suppresion 'OnTheFly'])
+° Ajouter valeur globale pour les PNJ (avec mise à jour auto des valeurs de PJ)
+° Masquer les Points d'aventure de la fiche de PNJ
+
+# Lanceur de dés
+° Afficher les Talents pour les PNJ (mais maintenir l'absence d'Aptitudes pour l'instant)
+° Remplacer les listes de choix par des cases à cocher (possibilité de choisir plusieurs cibles)
+
+# Boîte de dialogue
+° Mettre à jour et réécrire les macros updateStatus, updatePools, addItem, editItem et deleteItem
+° Mettre à jour la macro updatePurse et ajouter une macro checkPurse
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 2.3
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Modifier les états (config + image + string)
+
+# Fiche de personnage
+° Remplacer les champs de texte par des champs de nombre pour les Talents
+° Ajouter des valeurs pour les Aptitudes
+° Ajouter évènement 'onChangeImpersonated' pour fermer ou mettre à jour la fiche
+° Ajouter des boutons pour ouvrir ou permuter le côté du Lanceur de dés (toggleDiceRoller et switchDiceRoller)
+° Prépaper la boîte de dialogue de mise à jour des valeurs de base du personnage (updateStatus)
+° Réorganiser les fonctions et évènements JavaScript
+
+# Lanceur de dés
+° Supprimer le bouton de permutation du côté de l'écran (switchDiceRoller)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 2.2
+--------------------------------------------------------------------------------
+================================================================================
+
+# Fiche de personnage
+° Ajouter champs de saisie pour les valeurs de Talents et d'Aptitudes
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 2.1
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Renommer la propriété de pion 'Magie Noire' en 'MagieNoire'
+
+# Fiche de personnage
+° Ajouter champs de saisie pour les valeurs modifiables de Personnage
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 2.0
+--------------------------------------------------------------------------------
+================================================================================
+
+# Campagne
+° Voir la méthode publishHandout avec token IMAGE: (pas de modifs)
+° Réorganiser les librairies (brouillons conservés)
+
+# Lanceur de dés
+° Afficher les Talents et Aptitudes dans des balises SELECT (triés par groupe et ordre alphabétique ; filtrage en amont)
+° Ajouter champ 'Modificateur bonus' avec balise SELECT (valeur comprise entre +5 et -5)
+° Mettre en place l'affichage conditionnel des Potentiels (i.e. ne pas afficher valeurs supérieures à la caractéristique)
+* Ajouter les appels de macros avec définition des fonctions => USELESS : not a good idea in practice (redundant code)
+
+# Fiche de personnage
+° Retirer Héroïsme des Énergies et l'ajouter à Potentiels (positionné à gauche)
+° Définir la valeur maximale de la Bourse à 999999
+° Ajouter une infobulle 'Note' pour l'Équipement (p. ex. portée et dégâts)
+
+================================================================================
+--------------------------------------------------------------------------------
+# Alpha 1
+--------------------------------------------------------------------------------
+================================================================================
+
+# Overlay
+° Reduce overall size
+° Add translucid background
+
+# Sheet
+° Change background image
+° Change layout (CSS oriented)
+° Merge pages and menu into one page
+° Change Components & Means display (values only)

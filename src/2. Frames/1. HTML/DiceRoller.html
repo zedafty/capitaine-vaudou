@@ -1,0 +1,355 @@
+<!-- ======================================================================= -->
+<!-- ----------------------------------------------------------------------- -->
+<!--                                                                         -->
+<!--                      CAPITAINE VAUDOU DICE ROLLER                       -->
+<!--                                                                         -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ======================================================================= -->
+
+[h: pid = getPlayerToken()]
+[h: map = getTokenMap(pid)]
+
+[h: zPools          = getProp("Pools", pid, map)]
+[h: zComponents     = getProp("Components", pid, map)]
+[h: zMeans          = getProp("Means", pid, map)]
+[h: zTargets        = getProp("Targets", pid, map)]
+[h: zEnergies       = getProp("Energies", pid, map)]
+[h: zPotentials     = getProp("Potentials", pid, map)]
+[h: zSkills         = getProp("Skills", pid, map)]
+[h: zAbilities      = getProp("Abilities", pid, map)]
+[h: zDiceRollerPane = getProp("DiceRollerPane", pid, map)]
+[h: zDiceRollerSide = getProp("DiceRollerSide", pid, map)]
+
+[overlay("DiceRoller", "zorder=1"): {
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="Main.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Dice.css@Lib:Frames">
+		<link rel="stylesheet" type="text/css" href="Subs.css@Lib:Frames">
+		[h: url = macroLinkText("checkOverlay@Lib:Scripts", "none", "name=DiceRoller;id=" + getImpersonated(1))]
+		<link rel="onChangeImpersonated" type="macro" href="[r: url]">
+		<style>
+		[r:"
+			.icon {background-image: url('" + tableImage('ui', 0) + "');}
+		"]
+		</style>
+	</head>
+	<body class="[r: if(isPC(pid, map), 'pc', 'npc')]">
+
+		<a id="macrolink" class="hidden"></a>
+
+		<div class="diceroller[r: if (getConst('toolbar_bottom') == 1, ' top', '')] [r: zDiceRollerSide] [r: zDiceRollerPane]">
+
+			<!-- CONTROL BAR -->
+			<div class="bar">
+				<a href="[r: macroLinkText('haltOverlay@Lib:Scripts','none', 'DiceRoller')]" title="Fermer le lanceur de d&eacute;s"><i class="icon close"></i></a>
+				<a id="toggle_pane" href="javascript:void(0)"><i class="icon fold"></i></a>
+				<a id="switch_side" href="javascript:void(0)" title="Changer le lanceur de d&eacute;s de c&ocirc;t&eacute;"><i class="icon switch"></i></a>
+			</div>
+
+			<form id="form" action="javascript:void(0)">
+
+				<!-- COMBINATION -->
+				<div id="combination" class="pc">
+					<h4 data-title="Combinaison">Combinaison</h4>
+					<!-- Retrieve and compute Components and Means combinations -->
+					[h: body = json.get(zComponents, 'body')]
+					[h: heart = json.get(zComponents, 'heart')]
+					[h: mind = json.get(zComponents, 'mind')]
+					[h: perception = json.get(zMeans, 'perception')]
+					[h: action = json.get(zMeans, 'action')]
+					[h: resistance = json.get(zMeans, 'resistance')]
+					[r: global_value = floor((body + heart + mind + perception + action + body) / 6) * 2]
+					[h: body_perception = body + perception]
+					[h: body_action = body + action]
+					[h: body_resistance = body + resistance]
+					[h: heart_perception = heart + perception]
+					[h: heart_action = heart + action]
+					[h: heart_resistance = heart + resistance]
+					[h: mind_perception = mind + perception]
+					[h: mind_action = mind + action]
+					[h: mind_resistance = mind + resistance]
+					<input id="body" type="hidden" name="component" value="[r: body]">
+					<input id="heart" type="hidden" name="component" value="[r: heart]">
+					<input id="mind" type="hidden" name="component" value="[r: mind]">
+					<input id="perception" type="hidden" name="mean" value="[r: perception]">
+					<input id="action" type="hidden" name="mean" value="[r: action]">
+					<input id="resistance" type="hidden" name="mean" value="[r: resistance]">
+					<div class="row pad"><!-- MEANS -->
+						<i class="icon perception round" data-combination="perception" data-title="Perception ([r: if(perception >= 0, '&#43;' + perception, perception)])"></i>
+						<i class="icon action round" data-combination="action" data-title="Action ([r: if(action >= 0, '&#43;' + action, action)])"></i>
+						<i class="icon resistance round" data-combination="resistance" data-title="R&eacute;sistance ([r: if(resistance >= 0, '&#43;' + resistance, resistance)])"></i>
+					</div>
+					<div class="row"><!-- BODY -->
+						<i class="icon body round" data-combination="body" data-title="Corps ([r: if(body >= 0, '&#43;' + body, body)])"></i>
+						<input type="radio" id="body_perception" name="combination" value="[r: body_perception]" data-title="Corps / Perception">
+						<label for="body_perception">[r: body_perception]</label>
+						<input type="radio" id="body_action" name="combination" value="[r: body_action]" data-title="Corps / Action">
+						<label for="body_action">[r: body_action]</label>
+						<input type="radio" id="body_resistance" name="combination" value="[r: body_resistance]" data-title="Corps / R&eacute;sistance">
+						<label for="body_resistance">[r: body_resistance]</label>
+					</div>
+					<div class="row"><!-- HEART -->
+						<i class="icon heart round" data-combination="heart" data-title="C&oelig;ur ([r: if(heart >= 0, '&#43;' + heart, heart)])"></i>
+						<input type="radio" id="heart_perception" name="combination" value="[r: heart_perception]" data-title="C&oelig;ur / Perception">
+						<label for="heart_perception">[r: heart_perception]</label>
+						<input type="radio" id="heart_action" name="combination" value="[r: heart_action]" data-title="C&oelig;ur / Action">
+						<label for="heart_action">[r: heart_action]</label>
+						<input type="radio" id="heart_resistance" name="combination" value="[r: heart_resistance]" data-title="C&oelig;ur / R&eacute;sistance">
+						<label for="heart_resistance">[r: heart_resistance]</label>
+					</div>
+					<div class="row"><!-- MIND -->
+						<i class="icon mind round" data-combination="mind" data-title="Esprit ([r: if(mind >= 0, '&#43;' + mind, mind)])"></i>
+						<input type="radio" id="mind_perception" name="combination" value="[r: mind_perception]" data-title="Esprit / Perception">
+						<label for="mind_perception">[r: mind_perception]</label>
+						<input type="radio" id="mind_action" name="combination" value="[r: mind_action]" data-title="Esprit / Action">
+						<label for="mind_action">[r: mind_action]</label>
+						<input type="radio" id="mind_resistance" name="combination" value="[r: mind_resistance]" data-title="Esprit / R&eacute;sistance">
+						<label for="mind_resistance">[r: mind_resistance]</label>
+					</div>
+				</div>
+
+				<!-- GLOBAL VALUE -->
+				<div class="npc center">
+					<h4>Valeur globale</h4>
+					<input type="hidden" id="global_value" name="global_value" value="[r: global_value]">
+					<label for="global_value" class="global">[r: global_value]</label>
+				</div>
+
+				<!-- SKILLS -->
+				<div id="skills">
+					<h4>Talent</h4>
+					<div class="row">
+						<select name="skill">[r: getSkillList(zSkills)]</select>
+					</div>
+				</div>
+
+				<!-- TARGET -->
+				<div id="target">
+					<h4>Cible</h4>
+					<div class="row">
+						[h: natural = json.get(zTargets, "natural")]
+						[if(natural >= 0): natural = "&#43;" + natural]
+						[h: human = json.get(zTargets, "human")]
+						[if(human >= 0): human = "&#43;" + human]
+						[h: artificial = json.get(zTargets, "artificial")]
+						[if(artificial >= 0): artificial = "&#43;" + artificial]
+						[h: supernatural = json.get(zTargets, "supernatural")]
+						[if(supernatural >= 0): supernatural = "&#43;" + supernatural]
+						<input type="radio" id="natural" name="target" value="[r: natural]" data-title="Nature ([r: natural])">
+						<label for="natural"><i class="icon natural"></i></label>
+						<input type="radio" id="human" name="target" value="[r: human]" data-title="Humain ([r: human])">
+						<label for="human"><i class="icon human"></i></label>
+						<input type="radio" id="artificial" name="target" value="[r: artificial]" data-title="Artificiel ([r: artificial])">
+						<label for="artificial"><i class="icon artificial"></i></label>
+						<input type="radio" id="supernatural" name="target" value="[r: supernatural]" data-title="Surnaturel ([r: supernatural])">
+						<label for="supernatural"><i class="icon supernatural"></i></label>
+					</div>
+				</div>
+
+				<!-- DIFFICULTY -->
+				<div id="difficulty">
+					<h4>Difficult&eacute;</h4>
+					<div class="row">
+						<input type="radio" id="normal" name="difficulty" value="0" data-title="Normale" checked="checked">
+						<label for="normal">0</label>
+						<input type="radio" id="not_difficult" name="difficulty" value="+1" data-title="Ais&eacute;e">
+						<label for="not_difficult">+1</label>
+						<input type="radio" id="easy" name="difficulty" value="+2" data-title="Facile">
+						<label for="easy">+2</label>
+						<input type="radio" id="very_easy" name="difficulty" value="+4" data-title="Tr&egrave;s facile">
+						<label for="very_easy">+4</label>
+					</div>
+					<div class="row pad">
+						<input type="radio" id="not_easy" name="difficulty" value="-1" data-title="Malais&eacute;e">
+						<label for="not_easy">-1</label>
+						<input type="radio" id="difficult" name="difficulty" value="-2" data-title="Difficile">
+						<label for="difficult">-2</label>
+						<input type="radio" id="very_difficult" name="difficulty" value="-4" data-title="Tr&egrave;s difficile">
+						<label for="very_difficult">-4</label>
+					</div>
+				</div>
+
+				<!-- ABILITIES -->
+				<div id="abilities" class="hidden">
+					[if(json.length(zAbilities) > 0), code:{
+						<h4>Aptitude</h4>
+						<div class="row"><!-- ABILITY -->
+							<select name="ability">[r: getAbilityList(zAbilities)]</select>
+						</div>
+					}]
+				</div>
+
+				<!-- MODIFIER -->
+				<div>
+					<h4>Modificateur</h4>
+					<div class="row">
+						<input id="modifier" type="range" min="-5" max="5" value="0"><output>0</output>
+					</div>
+				</div>
+
+				<div class="pane"><!-- BEGIN PANE -->
+
+					<!-- POOLS -->
+					<div id="pools">
+						<input id="bp_used" type="hidden" value="0">
+						<input id="mp_used" type="hidden" value="0">
+						<input id="hp_used" type="hidden" value="0">
+						<h4>R&eacute;serves</h4>
+						<div id="bp" class="row" data-max="[r: json.get(zPools, 'bp')]"><!-- BP -->
+							<input type="radio" id="bp0" name="spend_bp" value="0" data-title="Points de souffle" title="Remettre &agrave; z&eacute;ro" checked="checked">
+							<label for="bp0" class="reset"><abbr>PS</abbr></label>
+							<input type="radio" id="bp1" name="spend_bp" value="1">
+							<label for="bp1">1</label>
+							<input type="radio" id="bp2" name="spend_bp" value="2">
+							<label for="bp2">2</label>
+							<input type="radio" id="bp3" name="spend_bp" value="3">
+							<label for="bp3">3</label>
+							<input type="radio" id="bp4" name="spend_bp" value="4">
+							<label for="bp4">4</label>
+						</div>
+						<div id="mp" class="row" data-max="[r: json.get(zPools, 'mp')]" data-spent="[r: json.get(zPools, 'mp_spent')]"><!-- MP -->
+							<input type="radio" id="mp0" name="spend_mp" value="0" data-title="&Eacute;quilibre psychologique" title="Remettre &agrave; z&eacute;ro" checked="checked">
+							<label for="mp0" class="reset"><abbr>EP</abbr></label>
+							<input type="radio" id="mp1" name="spend_mp" value="1">
+							<label for="mp1">1</label>
+							<input type="radio" id="mp2" name="spend_mp" value="2">
+							<label for="mp2">2</label>
+							<input type="radio" id="mp3" name="spend_mp" value="3">
+							<label for="mp3">3</label>
+							<input type="radio" id="mp4" name="spend_mp" value="4">
+							<label for="mp4">4</label>
+						</div>
+						[h: voodoo = number(json.get(zPotentials, "voodoo"))]
+						<div id="hp" class="row[r: if(voodoo > 0, '', ' hidden')]" data-max="[r: json.get(zPools, 'hp')]" data-spent="[r: json.get(zPools, 'hp_spent')]"><!-- HP -->
+							<input type="radio" id="hp0" name="spend_hp" value="0" data-title="Points de vie" title="Remettre &agrave; z&eacute;ro" checked="checked">
+							<label for="hp0" class="reset"><abbr>PV</abbr></label>
+							<input type="radio" id="hp1" name="spend_hp" value="1">
+							<label for="hp1">1</label>
+							<input type="radio" id="hp2" name="spend_hp" value="2">
+							<label for="hp2">2</label>
+							<input type="radio" id="hp3" name="spend_hp" value="3">
+							<label for="hp3">3</label>
+							<input type="radio" id="hp4" name="spend_hp" value="4">
+							<label for="hp4">4</label>
+						</div>
+						<a id="flush" href="javascript:void(0)" title="Purger les r&eacute;serves"><i class="icon flush"></i></a>
+					</div>
+
+					<!-- COUNTER -->
+					<div class="counter">
+						<div id="usable_points"><span title="PS, EP ou PV puisable(s) dans la r&eacute;serve">Points utilisables&nbsp;:</span> <span><code>0</code> sur <code>0</code></span></div>
+					</div>
+
+					<!-- ENERGIES -->
+					<div id="energies">
+						<h4>&Eacute;nergies</h4>
+						<div id="power" class="row" data-max="[r: json.get(zEnergies, 'power')]"><!-- POWER -->
+							<input type="radio" id="power0" name="power" value="0" data-title="Puissance" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="power0" class="reset"><i class="icon power"></i></label>
+							<input type="radio" id="power1" name="power" value="1" disabled="disabled">
+							<label for="power1">1</label>
+							<input type="radio" id="power2" name="power" value="2" disabled="disabled">
+							<label for="power2">2</label>
+							<input type="radio" id="power3" name="power" value="3" disabled="disabled">
+							<label for="power3">3</label>
+						</div>
+						<div id="speed" class="row" data-max="[r: json.get(zEnergies, 'speed')]"><!-- SPEED -->
+							<input type="radio" id="speed0" name="speed" value="0" data-title="Rapidit&eacute;" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="speed0" class="reset"><i class="icon speed"></i></label>
+							<input type="radio" id="speed1" name="speed" value="1" disabled="disabled">
+							<label for="speed1">1</label>
+							<input type="radio" id="speed2" name="speed" value="2" disabled="disabled">
+							<label for="speed2">2</label>
+							<input type="radio" id="speed3" name="speed" value="3" disabled="disabled">
+							<label for="speed3">3</label>
+						</div>
+						<div id="accuracy" class="row" data-max="[r: json.get(zEnergies, 'accuracy')]"><!-- ACCURACY -->
+							<input type="radio" id="accuracy0" name="accuracy" value="0" data-title="Pr&eacute;cision" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="accuracy0" class="reset"><i class="icon accuracy"></i></label>
+							<input type="radio" id="accuracy1" name="accuracy" value="1" disabled="disabled">
+							<label for="accuracy1">1</label>
+							<input type="radio" id="accuracy2" name="accuracy" value="2" disabled="disabled">
+							<label for="accuracy2">2</label>
+							<input type="radio" id="accuracy3" name="accuracy" value="3" disabled="disabled">
+							<label for="accuracy3">3</label>
+						</div>
+					</div>
+
+					<!-- POTENTIALS -->
+					<div id="potentials">
+						<h4>Potentiels</h4>
+						<div id="heroism" class="row" data-max="[r: json.get(zPotentials, 'heroism')]"><!-- HEROISM -->
+							<input type="radio" id="heroism0" name="heroism" value="0" data-title="H&eacute;ro&iuml;sme" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="heroism0" class="reset"><i class="icon heroism"></i></label>
+							<input type="radio" id="heroism1" name="heroism" value="1" disabled="disabled">
+							<label for="heroism1">1</label>
+							<input type="radio" id="heroism2" name="heroism" value="2" disabled="disabled">
+							<label for="heroism2">2</label>
+							<input type="radio" id="heroism3" name="heroism" value="3" disabled="disabled">
+							<label for="heroism3">3</label>
+						</div>
+						<div id="voodoo" class="row" data-max="[r: json.get(zPotentials, 'voodoo')]"><!-- VOODOO -->
+							<input type="radio" id="voodoo0" name="voodoo" value="0" data-title="Vaudou" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="voodoo0" class="reset"><i class="icon voodoo"></i></label>
+							<input type="radio" id="voodoo1" name="voodoo" value="1" disabled="disabled">
+							<label for="voodoo1">1</label>
+							<input type="radio" id="voodoo2" name="voodoo" value="2" disabled="disabled">
+							<label for="voodoo2">2</label>
+							<input type="radio" id="voodoo3" name="voodoo" value="3" disabled="disabled">
+							<label for="voodoo3">3</label>
+						</div>
+						<div id="white_magic" class="row" data-max="[r: json.get(zPotentials, 'white_magic')]"><!-- WHITE MAGIC -->
+							<input type="radio" id="white_magic0" name="white_magic" value="0" data-title="Magie blanche" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="white_magic0" class="reset"><i class="icon white-magic"></i></label>
+							<input type="radio" id="white_magic1" name="white_magic" value="1" disabled="disabled">
+							<label for="white_magic1">1</label>
+							<input type="radio" id="white_magic2" name="white_magic" value="2" disabled="disabled">
+							<label for="white_magic2">2</label>
+							<input type="radio" id="white_magic3" name="white_magic" value="3" disabled="disabled">
+							<label for="white_magic3">3</label>
+						</div>
+						<div id="black_magic" class="row" data-max="[r: json.get(zPotentials, 'black_magic')]"><!-- BLACK MAGIC -->
+							<input type="radio" id="black_magic0" name="black_magic" value="0" data-title="Magie noire" title="Remettre &agrave; z&eacute;ro" checked>
+							<label for="black_magic0" class="reset"><i class="icon black-magic"></i></label>
+							<input type="radio" id="black_magic1" name="black_magic" value="1" disabled="disabled">
+							<label for="black_magic1">1</label>
+							<input type="radio" id="black_magic2" name="black_magic" value="2" disabled="disabled">
+							<label for="black_magic2">2</label>
+							<input type="radio" id="black_magic3" name="black_magic" value="3" disabled="disabled">
+							<label for="black_magic3">3</label>
+						</div>
+					</div>
+
+					<!-- COUNTER -->
+					<div class="counter">
+						<div id="alloted_points"><span title="PS, EP ou PV investi(s) dans une &eacute;nergie ou un potentiel">Points allou&eacute;s&nbsp;:</span> <span><code>0</code> sur <code>0</code></span></div>
+					</div>
+
+				</div><!-- END PANE -->
+
+				<!-- INPUTS -->
+				<div class="row">
+				<button id="reset" type="reset" class="cancel" title="R&eacute;initialiser"><i class="icon reset"></i></button>
+				<button id="roll" type="submit" class="confirm" title="Lancer les d&eacute;s" disabled="disabled"><i class="icon roll"></i></button>
+				</div>
+
+				<!-- REQUIREMENTS -->
+				<div class="requirement">
+					<div id="require_combination" class="hidden">Pas de combinaison</div>
+				</div>
+
+			</form>
+		</div>
+
+		<script>
+
+			[r: writeMainJavaScript()]
+			[r: writeDiceJavaScript()]
+
+		</script>
+
+	</body>
+</html>
+}]

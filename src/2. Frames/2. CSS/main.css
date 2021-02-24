@@ -1,0 +1,864 @@
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                CAPITAINE VAUDOU MAIN CASCADING STYLE SHEET                 */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/*              Main Sheet MUST be linked BEFORE all the others               */
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Elements */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+/* Document */
+html {
+	font-size: 16px; /* WARNING : Base font size (used as metric for 'rem' unit) */
+}
+body {
+	margin: 0;
+	font-size: 0; /* WARNING : Font size erase (to prevent white spaces mess) */
+	text-align: center;
+}
+
+div, span, img, button, input, select, label {
+	box-sizing: border-box;
+	vertical-align: top;
+}
+
+div, img {
+	margin: 0;
+	padding: 0;
+}
+
+label {
+	display: inline-block;
+}
+
+/* Font-family */
+html, code {
+	font-family: sans-serif, Arial;
+}
+
+/* Font Size */
+h1 {font-size: 28px;}
+h2 {font-size: 24px;}
+h3 {font-size: 20px;}
+h4 {font-size: 18px;}
+h5 {font-size: 17px;}
+h6 {font-size: 16px;}
+blockquote, p, q, li {font-size: 16px;}
+figcaption, small {font-size: 12px;}
+
+/* Alignment */
+h1, h2, h3, h4, h5, h6 {
+	margin: .5em 0 .375em;
+	text-align: center;
+}
+p {
+	margin: 6px 0;
+	line-height: 1.25;
+	text-align: justify;
+}
+
+/* Formatting */
+i[title],
+u[title],
+dfn[title],
+abbr[title],
+code[title],
+span[title],
+small[title] {
+	cursor: default;
+}
+dfn {font-style: normal;}
+a, u, abbr {text-decoration: none;}
+a {color: rgb(24,128,112);}
+a:hover {color: rgb(160,96,24);}
+a:focus {color: rgb(112,24,24); outline: 0;}
+a.disabled:hover,
+a.disabled:focus,
+a.disabled {cursor: default; color: rgb(24,24,24); opacity: .375;}
+u {border-bottom: 1px solid rgb(24,128,112);}
+code {color: rgb(24,128,112);}
+
+/* Inputs */
+select {
+	width: 100%;
+	height: 20px;
+}
+input[type='checkbox'] {
+	margin: 0;
+}
+button,
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+input[type='text'],
+input[type='number'] {
+	height: 30px;
+	margin: 0;
+	padding: 0;
+	font-size: inherit;
+	text-align: center;
+	outline-offset: -1px;
+}
+button,
+input[type='button'],
+input[type='submit']
+input[type='reset'] {
+	border-radius: 4px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgb(240,224,216) rgb(128,120,96) rgb(128,120,96) rgb(240,232,216);
+	background-color: rgb(208,200,176);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25), 0 8px 16px rgb(240,232,216) inset;
+	transition: box-shadow .125s, background-color .125s;
+}
+input[type='text'],
+input[type='number'] {
+	width: 100%;
+	color: rgb(24,128,112);
+	border: 1px solid rgb(176,176,160);
+	background-color: white;
+}
+input[type='text']::placeholder {
+	opacity: .375;
+}
+input[type=number] {-moz-appearance: textfield;}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	appearance: none;
+	-webkit-appearance: none;
+}
+button.cancel,
+input[type='button'].cancel,
+input[type='submit'].cancel,
+input[type='reset'].cancel {
+	background-color: rgb(208,64,48);
+}
+
+button:hover,
+input[type='button']:hover,
+input[type='submit']:hover,
+input[type='reset']:hover {
+	background-color: rgb(255,224,64);
+}
+input[type='text']:hover,
+input[type='number']:hover {
+	color: rgb(160,96,24);
+	background-color: rgb(248,240,160);
+}
+input[type='text']:focus,
+input[type='number']:focus {
+	color: rgb(112,24,24);
+	background-color: rgb(255,248,192);
+}
+select:focus,
+button:focus,
+input[type='button']:focus,
+input[type='submit']:focus,
+input[type='reset']:focus {
+	background-color: rgb(255,240,176);
+}
+select:focus,
+button:focus,
+input[type='button']:focus,
+input[type='submit']:focus,
+input[type='reset']:focus,
+input[type='text']:focus,
+input[type='number']:focus {
+	border-radius: 0;
+	outline: 2px solid rgba(255,240,128,.9375);
+	box-shadow: 0 0 6px 4px rgba(255,232,64,.5);
+}
+input[readonly] {
+	cursor: default;
+	color: rgb(64,48,32);
+}
+input[readonly]:hover,
+input[readonly]:focus {
+	color: rgb(64,48,32);
+	background-color: initial;
+	box-shadow: none;
+	outline: 0;
+}
+button[disabled] {opacity: .625;}
+button[disabled] i {opacity: .375;}
+button[disabled]:hover {
+	cursor: default;
+	background-color: rgb(208,200,176);
+}
+button[disabled]:focus {
+	cursor: default;
+	background-color: red;
+}
+
+/* Tables */
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+tr, td{
+	text-align: center;
+	vertical-align: middle;
+}
+caption {
+	caption-side: bottom;
+	padding: 5px;
+	line-height: 15px;
+}
+
+/* Titles */
+dfn[title],
+abbr[title] {border-bottom: 1px dotted rgb(0,0,0);}
+dfn[title]:hover,
+abbr[title]:hover {background-color: rgba(0,0,0,.125);}
+
+/* Pointer */
+a, label,
+button:not([disabled]),
+input[type='radio']:not([disabled]),
+input[type='checkbox']:not([disabled]) {
+	cursor: pointer;
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Types */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+body.pc .npc {display: none;}
+body.npc .pc {display: none;}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Icons */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.icon {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+.icon.med {
+	width: 30px;
+	height: 30px;
+}
+.icon.big {
+	width: 40px;
+	height: 40px;
+}
+
+/* Capitaine Vaudou */
+.icon.body {background-position: 0 0;}
+.icon.heart {background-position: -20px 0;}
+.icon.mind {background-position: -40px 0;}
+.icon.perception {background-position: -60px 0;}
+.icon.action {background-position: -80px 0;}
+.icon.resistance {background-position: -100px 0;}
+.icon.natural {background-position: 0 -20px;}
+.icon.human {background-position: -20px -20px;}
+.icon.artificial {background-position: -40px -20px;}
+.icon.supernatural {background-position: -60px -20px;}
+.icon.power {background-position: 0 -40px;}
+.icon.speed {background-position: -20px -40px;}
+.icon.accuracy {background-position: -40px -40px;}
+.icon.heroism {background-position: -80px -20px;}
+.icon.voodoo {background-position: -100 -20px;}
+.icon.white-magic {background-position: -60px -40px;}
+.icon.black-magic {background-position: -80px -40px;}
+.icon.kabbalah {background-position: -100px -40px;}
+.icon.black.body {background-position: 0 -60px;}
+.icon.black.heart {background-position: -20px -60px;}
+.icon.black.mind {background-position: -40px -60px;}
+.icon.black.perception {background-position: -60px -60px;}
+.icon.black.action {background-position: -80px -60px;}
+.icon.black.resistance {background-position: -100px -60px;}
+.icon.black.natural {background-position: 0 -80px;}
+.icon.black.human {background-position: -20px -80px;}
+.icon.black.artificial {background-position: -40px -80px;}
+.icon.black.supernatural {background-position: -60px -80px;}
+.icon.black.power {background-position: 0 -100px;}
+.icon.black.speed {background-position: -20px -100px;}
+.icon.black.accuracy {background-position: -40px -100px;}
+.icon.black.heroism {background-position: -80px -80px;}
+.icon.black.voodoo {background-position: -100 -80px;}
+.icon.black.white-magic {background-position: -60px -100px;}
+.icon.black.black-magic {background-position: -80px -100px;}
+.icon.black.kabbalah {background-position: -100px -100px;}
+
+/* Dices */
+.icon.d6-f1 {background-position: 0 -120px;}
+.icon.d6-f2 {background-position: -20px -120px;}
+.icon.d6-f3 {background-position: -40px -120px;}
+.icon.d6-f4 {background-position: -60px -120px;}
+.icon.d6-f5 {background-position: -80px -120px;}
+.icon.d6-f6 {background-position: -100px -120px;}
+.icon.d6-f1.cs {background-position: 0 -140px;}
+.icon.d6-f2.cs {background-position: -20px -140px;}
+.icon.d6-f3.cs {background-position: -40px -140px;}
+.icon.d6-f4.cs {background-position: -60px -140px;}
+.icon.d6-f5.cs {background-position: -80px -140px;}
+.icon.d6-f6.cs {background-position: -100px -140px;}
+.icon.d6-f6.cf {background-position: 0 -160px;}
+
+/* Values */
+.icon.v0 {background-position: -20px -160px;}
+.icon.v2 {background-position: -40px -160px;}
+.icon.v4 {background-position: -60px -160px;}
+.icon.v6 {background-position: -80px -160px;}
+.icon.v8 {background-position: -100px -160px;}
+.icon.v10 {background-position: 0 -180px;}
+.icon.vx {background-position: -20px -180px;}
+
+/* UI */
+.icon.valid {background-position: -120px -160px;}
+.icon.close {background-position: -140px -160px;}
+.icon.add {background-position: -160px -160px;}
+.icon.delete {background-position: -180px -160px;}
+.icon.reset {background-position: -200px -160px;}
+.icon.update {background-position: -220px -160px;}
+.icon.lock {background-position: -120px -180px;}
+.icon.unlock {background-position: -140px -180px;}
+.icon.edit {background-position: -160px -180px;}
+.icon.switch {background-position: -180px -180px;}
+.icon.unfold {background-position: -200px -180px;}
+.icon.fold {background-position: -220px -180px;}
+.icon.note {background-position: -40px -180px;}
+.icon.stripe {background-position: -60px -180px;}
+.icon.skill {background-position: -80px -180px;}
+.icon.skill-note {background-position: -100px -180px;}
+.icon.sack {background-position: 0 -200px;}
+.icon.roll {background-position: -20px -200px;}
+.icon.ritual {background-position: -40px -200px;}
+.icon.flush {background-position: -60px -200px;}
+.icon.clear {background-position: -80px -200px;}
+.icon.degroup {background-position: -100px -200px;}
+.icon.regroup {background-position: -120px -200px;}
+.icon.balance {background-position: -140px -200px;}
+.icon.balance-reverse {background-position: -160px -200px;}
+.icon.story {background-position: -180px -200px;}
+.icon.story-furl {background-position: -200px -200px;}
+
+/* Toolbar */
+.icon.sheet {background-position: -120px 0;}
+.active > .icon.sheet {background-position: -160px 0;}
+.icon.roller {background-position: -120px -40px;}
+.active > .icon.roller {background-position: -160px -40px;}
+.icon.pools {background-position: -200px 0;}
+.icon.purse {background-position: -200px -40px;}
+.icon.token {background-position: -120px -80px;}
+.icon.token-loc {background-position: -160px -80px;}
+.icon.token-cross {background-position: -120px -120px;}
+.icon.token-crown {background-position: -160px -120px;}
+.icon.weather-icon {background-position: -200px -80px;}
+
+/* Bubbling Icons */
+.icon.screen {background-position: -200px -120px;}
+.icon.gear {background-position: -220px -120px;}
+
+/* Button Links */
+.icon.wheel {background-position: 0 -220px;}
+.icon.ship {background-position: -30px -220px;}
+.icon.fire-port {background-position: -60px -220px;}
+.icon.fire-star {background-position: -90px -220px;}
+.icon.hollowed {background-position: -120px -220px;}
+.icon.chained {background-position: -150px -220px;}
+.icon.canister {background-position: -180px -220px;}
+.icon.heated {background-position: -210px -220px;}
+
+/* FX Icons */
+.fx .icon.degroup,
+.fx .icon.regroup {
+	transition: transform .25s;
+}
+.fx .icon.regroup {
+	background-position: -100px -200px;
+	transform: rotate(90deg);
+}
+
+/* Unactive */
+.unactive .icon {opacity: .375}
+.unactive:hover .icon {opacity: 1}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Button Links */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+a.button {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border-radius: 3px;
+	outline: 2px solid transparent;
+}
+a.button.warning {
+	background-color: rgba(224,64,24,.375);
+}
+a.button:not(.disabled):hover,
+a.button:not(.disabled):focus {
+	background-color: rgb(240,224,128);
+	outline-color: rgb(128,24,24);
+}
+a.button:not(.disabled):hover i,
+a.button:not(.disabled):focus i {
+	background-position-y: -250px;
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Columns */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+[class^=col] {display: inline-block;}
+.col-1o4 {width: 25%;}
+.col-1o3 {width: 33.33333333333333333333%;}
+.col-2o3 {width: 66.66666666666666666666%;}
+.col-1o2 {width: 50%;}
+.col-1o1 {width: 100%;}
+[class^=col].gutter {padding: 0 10px;}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Captions */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.caption {
+	position: relative;
+	text-align: left;
+	font-size: 13px;
+	color: rgb(64,48,24);
+}
+.caption.center {
+	text-align: center;
+}
+.caption.pad {
+	padding-left: 10px;
+}
+.caption h4 {
+	font-size: inherit;
+}
+.caption h4,
+.caption a {
+	display: inline-block;
+	height: 25px;
+	line-height: 25px;
+}
+.caption a {
+	padding: 0 4px;
+	font-weight: bold;
+	color: black;
+	border-radius: 3px;
+}
+.caption a .icon {
+	margin-right: 4px;
+	vertical-align: middle;
+}
+.caption a:hover,
+.caption a:focus {
+	background-color: rgb(255,240,64);
+}
+.caption .label {
+	display: inline-block;
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+}
+.caption .label .icon + span {
+	line-height: 20px;
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Tables */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.table {
+	position: relative;
+	table-layout: fixed;
+	vertical-align: top;
+	border-width: 2px;
+	border-style: solid;
+}
+.table th {
+	height: 33px;
+}
+.table td {
+	height: 30px;
+}
+.table th {
+	font-variant: small-caps;
+	text-transform: lowercase;
+}
+.table th {
+	color: white;
+	font-size: 12px;
+}
+.table th a {
+	display: inline-block;
+	color: white;
+	padding: 0 10px;
+	border-radius: 2px;
+}
+.table th a span {
+	line-height: 30px;
+}
+.table th a:hover {
+	color: rgb(255,240,64);
+}
+.table th a:focus {
+	background-color: rgba(255,240,64,.25);
+}
+.table th a:hover span {
+	border-bottom: 1px solid rgb(255,240,64);
+}
+.table th dfn[title],
+.table th abbr[title] {
+	border-bottom: 1px dotted rgb(255,192,0);
+}
+.table th small {
+	font-variant: initial;
+	font-size: 10px;
+	opacity: .875;
+}
+.table td {
+	font-size: 14px;
+	border: 1px solid rgb(176,176,160);
+	border-top: 0;
+	background-color: white;
+}
+.table td:first-of-type {
+	border-left: 0;
+}
+.table td:last-of-type {
+	border-right: 0;
+}
+.table .pad {padding: 0 10px;}
+.table .rowspan,
+.table .rowspan td,
+.table tr:last-of-type td {
+	border-bottom: 0;
+}
+.table .rowspan {height: 33px;}
+.table .maxheight {height: 63px;}
+.table .title:not([title='']):hover {
+	cursor: default;
+	background-color: rgb(248,240,224);
+	background-color: rgb(240,236,224);
+}
+.table td a {
+	display: inline-block;
+	width: 100%;
+}
+.table td a {
+	height: 27px;
+	line-height: 27px;}
+.table td a:hover {
+	background-color: rgba(255,240,64,.5);
+}
+.table.tall th {height: 48px;}
+.table.tall td,
+.table.bloat td {font-size: 16px;}
+.table.bloat td {height: 48px;}
+.table.giant {height: 206px;}
+.table.giant td {font-size: 18px;}
+.table.bloat td input,
+.table.bloat .val-max span,
+.table.bloat .val-max output {
+	height: 45px;
+	line-height: 45px;
+}
+.table.giant td input,
+.table.giant .val-max span,
+.table.giant .val-max output {
+	height: 62px;
+	line-height: 62px;
+}
+.table input {
+	border: 0;
+	background-color: inherit;
+}
+
+/* Table Footlines */
+.table + .footline {
+	height: 48px;
+	text-align: center;
+}
+.table + .footline:before,
+.table + .footline:after {
+	pointer-events: none;
+	content: '';
+	display: inherit;
+	position: absolute;
+	top: 0;
+	width: calc(50% - 100px);
+	height: 25px;
+	border-width: 0 0 2px 0;
+	border-style: solid;
+}
+.table + .footline:before {
+	left: 45px;
+	border-left-width: 2px;
+}
+.table + .footline:after {
+	right: 45px;
+	border-right-width: 2px;
+}
+.table + .footline a {
+	display: inline-block;
+	width: auto;
+	height: 28px;
+	margin-top: 10px;
+	padding-right: 10px;
+	line-height: 30px;
+	border-radius: 3px;
+}
+.table + .footline a .icon {margin-top: 6px;}
+
+/* Table Colors */
+.table,
+.table + .footline:before,
+.table + .footline:after {border-color: rgb(32,32,32);}
+.table th {background-color: rgb(32,32,32);}
+.pc .table,
+.pc .table + .footline:before,
+.pc .table + .footline:after {border-color: rgb(112,24,24);}
+.pc .table th {background-color: rgb(112,24,24);}
+.npc .table,
+.npc .table + .footline:before,
+.npc .table + .footline:after {border-color: rgb(24,64,64);}
+.npc .table th {background-color: rgb(24,64,64);}
+
+/* Value-maximum Cells */
+.table .val-max .val {
+	float: left;
+	width: calc(50% - 2.5%);
+}
+.table .val-max .max {
+	float: right;
+	width: calc(50% - 2.5%);
+}
+.table .val-max output.val,
+.table .val-max span {
+	height: 30px;
+	line-height: 30px;
+}
+.table .val-max span {
+	display: inline-block;
+	width: 5%;
+	height: 30px;
+	font-size: 10px;
+}
+
+/* Current-base Cells */
+.table .cur-base {
+	font-size: 0;
+	text-align: left;
+}
+.table .cur-base .cur,
+.table .cur-base .base,
+.table .cur-base span {
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+}
+.table .cur-base .cur {
+	width: 25%;
+	margin-left:37.5%;
+	font-size: 14px;
+	text-align: center;
+}
+.table .cur-base .base {
+	width: 15%;
+	font-size: 12px;
+	color: grey;
+}
+.table .cur-base span {font-size: 10px;}
+.table .cur-base span:nth-of-type(1),
+.table .cur-base span:nth-of-type(2) {width: 5%; text-align: center;}
+
+/* Icons */
+.table tbody .icon {margin-top: 4px;}
+
+/* Blocks */
+.table-block {
+	position: relative;
+}
+.table-block > table {
+	display: inline-table;
+}
+.table-block .aside {
+	border: 2px solid transparent;
+}
+.table-block .aside td {
+	height: 33px;
+	padding: 0;
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Tooltips */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.tooltip {
+	position: absolute;
+	min-width: 50px;
+	max-width: 600px;
+	min-height: 20px;
+	max-height: 320px;
+	top: 0;
+	left: 0;
+	padding: 8px;
+	color: white;
+	font-size: 14px;
+	text-align: left;
+	border-radius: 4px;
+	background-color: rgba(24,24,24,.875);
+	text-shadow: 1px 1px 0 black;
+	z-index: 10;
+}
+.tooltip:after {
+	content: '';
+	position: absolute;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	top: 100%;
+	left: 15px;
+	border-width: 4px 10px 4px 10px;
+	border-style: solid;
+	border-color: transparent;
+	border-top-color: rgba(24,24,24,.875);
+	box-sizing: border-box;
+}
+[data-tooltip] {position: relative;}
+[data-tooltip]:before {
+	content: '';
+	position: absolute;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+/* ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* # Weather */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+
+.tool .weather {
+	user-select: none;
+	position: absolute;
+	display: inline-block;
+	width: 300px;
+	top: 20px;
+	left: calc(50% - 150px);
+}
+.tool .weather > .block {
+	--pointermap:block;
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+}
+
+.tool .weather .caption {
+	position: absolute;
+	font-size: 10px;
+	height: 16px;
+	text-align: center;
+	z-index: 1;
+}
+.tool .weather .caption span {
+	color: white;
+	padding: 2px 4px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-shadow: 1px 1px black;
+	border-radius: 3px;
+	background-color: rgba(0,0,0,.375);
+}
+
+.tool .weather svg {pointer-events: none;}
+.tool .weather svg .black {fill: #202020; opacity: .25;}
+.tool .weather svg .ltred {fill: #d01818}
+.tool .weather svg .dkred {fill: #801818}
+.tool .weather svg .ltblue {fill: #80c0f0}
+.tool .weather svg .brblue {fill: #c0e0f0}
+.tool .weather svg .ltgrey {fill: #d0d0d0;}
+.tool .weather svg .white {fill: #f0f0f0}
+.tool .weather svg .pink {fill: #f4a0d0}
+.tool .weather svg .orange-stroke {fill: #f4b018; stroke: #f4e060; stroke-miterlimit: 10}
+.tool .weather svg .paleyellow {fill: #f4e060}
+.tool .weather svg .paleyellow-stroke {fill: #f4e060; opacity: .5;}
+
+.tool .weather .degree {
+	font-size: 20px;
+	color: white;
+	text-shadow: 1px 1px black;
+}
+
+.tool .weather .wind span {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	font-size: 10px;
+}
+
+.tool .weather .skyset {
+	--pointermap:block;
+	display: inline-block;
+}
+.tool .weather .skyset ul {padding: 0;}
+.tool .weather .skyset li {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+}
+.tool .weather .sky svg {
+	width: 50px;
+	height: 50px;
+}
+.tool .weather .skyset svg {
+	width: 30px;
+	height: 30px;
+}
+
+.tool .weather .degree:hover,
+.tool .weather .wind:not(.active):hover,
+.tool .weather .sky:hover {cursor: default;}
+.tool.gm .weather .degree:hover,
+.tool.gm .weather .wind:not(.active):hover,
+.tool.gm .weather .sky:hover,
+.tool.gm .weather .skyset li:hover {cursor: pointer; background-color: rgba(255,240,128,.875);}
+.tool.gm .weather .wind:hover .ltred {fill: #fc0;}
+.tool.gm .weather .wind:hover .dkred {fill: #ea0;}
+.tool.gm .weather .wind.active .ltred {fill: #ff0;}
+.tool.gm .weather .wind.active .dkred {fill: #fe0;}
+.tool.gm .weather .degree:hover,
+.tool.gm .weather .degree.active {color: black; text-shadow: none;}
+.tool.gm .weather .degree.active {transition: background-color .5s;}
+.tool.gm .weather .degree.active {background-color: rgba(160,255,224,.5);}
+.tool.gm .weather .degree.active.slow {background-color: rgba(255,240,144,.5);}
+.tool.gm .weather .degree.active.soft {background-color: rgba(255,160,96,.5);}
+.tool.gm .weather .degree.active.fast {background-color: rgba(224,64,96,.375);}
