@@ -18,16 +18,23 @@
 
 ================================================================================
 --------------------------------------------------------------------------------
-# Latest : Bêta 1.0
+# Latest : Bêta 1.1
 --------------------------------------------------------------------------------
 ================================================================================
 
+TODO : Ajouter un Compte-tours pour le MJ
 TODO : Permettre la réorganisation de l'inventaire sur la dernière ligne
 TODO : Voir pour créer une icône d'activation des EP + des icônes des états (héroïsme + 3 énergies de base)
 TODO : Voir pour renverser la logique de la consommation des énergies
 IDEA : Check change over character sheet by putting event onMouseEnter() followed by a simple that checks if the player has an assigned token
 ! max pour l'inventaire des personnages => pas de limite
 ! max pour l'inventaire des navires => pas de limite
+
+================================================================================
+--------------------------------------------------------------------------------
+# Latest : Bêta 1.0
+--------------------------------------------------------------------------------
+================================================================================
 
 # Campagne
 ° Mettre à jour les propriétés de campagne (navire uniquement)
