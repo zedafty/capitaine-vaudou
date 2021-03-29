@@ -60,7 +60,7 @@ Ship: {"name": "Black Pearl", "class": "3", "flag" : 0, "captain" : ""}
 Points: {"sail_pts": 9, "sail_max": 9, "hull_pts": 9, "hull_max": 9, "hull_last": 9}
 Crew: {"maneuver": 8, "maneuver_min": 8, "additional": 0, "additional_max": 35, "crew_total": 8, "crew_max": 50, "vacant" : 0}
 Staff: {"captain_id": "", "captain_name": "", "captain_action": "0", "captain_navigation": "-4", "captain_artificial": "-1", "skipper_id": "", "skipper_name": "", "skipper_mind": "0", "skipper_action": "0", "skipper_navigation": "-4", "skipper_artificial": "-1", "gunner_id": "", "gunner_name": "", "gunner_perception": "0", "gunner_artillery": "-4", "gunner_natural": "-1", "gunner_human": "-1", "gunner_artificial": "-1", "gunner_supernatural": "-1"}
-Sailing: {"speed_day": 90, "speed_maneuver": 5, "draught": 1, "maneuver_penalty" : 0, "speed_maneuver_modifier": 0, , "toggle_speed_maneuver_modifier": 0}
+Sailing: {"speed_day": 90, "speed_maneuver": 5, "draught": 1, "maneuver_penalty" : 0, "speed_maneuver_modifier": 0, "toggle_speed_maneuver_modifier": 0}
 Cannonade: {"distance": "null", "target": "null"}
 Cannonballs: {"hollowed": 0, "chained": 0, "canister": 0, "heated": 0, "last" : ""}
 Cannons1: {"port1_pts": 8, "port1_cur": 8, "port1_max": 8, "port1_msb" : 2, "star1_pts": 8, "star1_cur": 8, "star1_max ": 8, "star1_msb" : 2}
